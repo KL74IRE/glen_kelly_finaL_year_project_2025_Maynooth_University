@@ -1,5 +1,8 @@
+PImage car;
+
 void setup() {
   size(1280, 800);
+  car = loadImage("car.png");
 }
 
 void draw() {
@@ -7,6 +10,7 @@ void draw() {
   
   Track();
   Points();
+  car();
 }
 
 void Track()
@@ -36,6 +40,12 @@ void Track()
     curveVertex(p5.x, p5.y);
     curveVertex(p5.x, p5.y);
   endShape();
+}
+
+void car()
+{
+  stroke(3);
+  image(car, 200, 400,40,40);
 }
 
 void Points()
