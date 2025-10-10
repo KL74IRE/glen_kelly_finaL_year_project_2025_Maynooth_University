@@ -1,4 +1,4 @@
-double trackLength(double [] x, double [] y, int start, int end, int steps)
+double ratio(double [] x, double [] y, int start, int end, int steps, double mTrackLength)
 {
   double[] s = new double[x.length];
   for (int i = 0; i < x.length; i++) {
@@ -23,7 +23,8 @@ double trackLength(double [] x, double [] y, int start, int end, int steps)
     prevX = tx;
     prevY = ty;
     }
-  return(totalLength);
-  //hello
+  //println(totalLength + " " + mTrackLength);
+  double ratio = totalLength/mTrackLength;
+  return(ratio);
 
 }
