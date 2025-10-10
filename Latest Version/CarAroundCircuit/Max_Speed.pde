@@ -7,9 +7,9 @@ double [] [] maxSpeed(double [] [] radius, int steps)
   double [] [] Speeds = new double [steps] [6];
   for(int i = 0; i < steps; i++)
   {
-    Speeds [i] [0] = radius [i] [0];                                                 //x
-    Speeds [i] [1] = radius [i] [1];                                                 //y
-    Speeds [i] [2] = radius [i] [2];                                                 //radius
+    Speeds [i] [0] = radius [i] [0];                                                         //x
+    Speeds [i] [1] = radius [i] [1];                                                         //y
+    Speeds [i] [2] = radius [i] [2];                                                         //radius
     Speeds [i] [3] = (3.6*(Math.sqrt(((float)tyres[0])*(9.81)*((float)radius [i] [2]))));    //Soft
     Speeds [i] [4] = (3.6*(Math.sqrt(((float)tyres[1])*(9.81)*((float)radius [i] [2]))));    //Medium
     Speeds [i] [5] = (3.6*(Math.sqrt(((float)tyres[2])*(9.81)*((float)radius [i] [2]))));    //Hard

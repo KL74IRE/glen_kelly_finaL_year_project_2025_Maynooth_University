@@ -15,7 +15,10 @@ void setup() {
 
 void brandsHatch()
 {
-    int steps = 1000;
+    boolean showWaypoints = true;
+    boolean showPoints = true;
+    boolean showSpeeds = true;
+    int steps = 100;
     int mTrackLength = 1944;
     double[] x = getXBrands();  //Get X
     double[] y = getYBrands();  //Get Y
@@ -23,6 +26,7 @@ void brandsHatch()
     double [] [] trackPoints = drawTrack(x,y,20,21,steps); //X points, Y points, Start of 2nd Run, End of 2nd Run, Points for 1 lap, Length in m desired
     double [] [] radius = radius(trackPoints,steps,ratio);
     double [] [] speeds = maxSpeed(radius,steps);
+    visualisation(x,y,speeds,steps,showWaypoints,showPoints,showSpeeds);
     carAroundTrack(trackPoints,speeds);
 }
 

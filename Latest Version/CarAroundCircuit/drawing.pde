@@ -21,6 +21,7 @@ double [] [] drawTrack(double [] x, double [] y, int start, int end, int steps)
     double tx = splineX.value(t);
     double ty = splineY.value(t);
     vertex((float)tx, (float)ty);
+    drawPoints(tx,ty, #0000FF, 10);
     trackPoints [j] [0] = tx;
     trackPoints [j] [1] = ty;
     j++;
@@ -29,11 +30,33 @@ double [] [] drawTrack(double [] x, double [] y, int start, int end, int steps)
   endShape();
 
   return(trackPoints);
-
 }
 
-void drawPoints(double x, double y) {
-  stroke(0);
-  strokeWeight(10);
+void drawPoints(double x, double y, color c, double weight) {
+  stroke(c);
+  strokeWeight((float)weight);
   point((float)x, (float)y);
+  stroke(0);
+  strokeWeight(2);
+}
+
+void visualisation(double [] x, double [] y, double [][] speeds, int steps, boolean waypoints, boolean points, boolean speed)
+{
+  if(waypoints)
+  {
+    for(int i = 0; i < x.length; i++)
+    {
+      drawPoints(x[i],y[i], #9D00FF, 25);
+    }
+  }
+  
+  if(points)
+  {
+    for(int i = 0; i < steps; i++)
+    {
+      fill(0);
+      text(i, (float)speeds [i][0], (float) speeds [i][1]+ 10);
+      drawPoints(speeds [i][0] , speeds [i][1], #FF0000, 5);
+    }
+  }
 }
