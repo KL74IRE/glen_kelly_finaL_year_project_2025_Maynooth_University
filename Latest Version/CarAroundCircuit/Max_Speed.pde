@@ -20,49 +20,35 @@ double [] [] maxSpeed(double [] [] radius, int steps)
     //println("Point: " + nf((float)i,3,0) +", x = " + nf(i, 3, 0) + ", y = " + nf((float)(radius[i][0]), 3, 5) + ", radius = " + nf((float)(radius[i][1]), 4, 5) + "m" + ", Max Speed (Soft): " + nf((float)(Speeds[i][3]), 4, 3) + "km/h" + " (Medium): " + nf((float)(Speeds[i][4]), 4, 3) + "km/h" + " (Hard): " + nf((float)(Speeds[i][5]), 4, 3) + "km/h");
   }
   
-
+  saveSpeedsToExcel(radius,steps,tyres);
   
   return Speeds;
 }
 
-void printToExcel(double [][] radius, double steps)
-{
-     // Create CSV writer
+void saveSpeedsToExcel(double[][] radius, int steps, double[] tyres) {
   PrintWriter output = createWriter("data.csv");
 
-
-  // Write header
+  // Header
   output.println("Point,x,y,Radius (m),Max Speed (Soft km/h),Max Speed (Medium km/h),Max Speed (Hard km/h)");
 
-  // Write actual calculated data to CSV
   for (int i = 0; i < steps; i++) {
-    double speeds = radius[i][3]; 
-    double speedm = radius[i][4]; 
-    double speedh = radius[i][5];
-    if(speeds >360)
-    {
-      speeds = 360;
-    }
-    if(speedm >360)
-    {
-      speedm = 360;
-    }
-    if(speedh >360)
-    {
-      speedh = 360;
-    }
-    output.println(
-      i + "," +
-      radius[i][0] + "," +
-      radius[i][1] + "," +
-      radius[i][2] + "," +
-      speeds + "," +
-      speedm + "," +
-      speedh
-    );
+    double x = radius[i][0];
+    double y = radius[i][1];
+    double r = radius[i][2];
+
+    // Calculate speeds
+    double speeds = 3.6 * Math.sqrt(tyres[0] * 9.81 * r);
+    double speedm = 3.6 * Math.sqrt(tyres[1] * 9.81 * r);
+    double speedh = 3.6 * Math.sqrt(tyres[2] * 9.81 * r);
+
+    // Cap at 360 km/h
+    if (speeds > 360) speeds = 360;
+    if (speedm > 360) speedm = 360;
+    if (speedh > 360) speedh = 360;
+
+    output.println(i + "," + x + "," + y + "," + r + "," + speeds + "," + speedm + "," + speedh);
   }
 
-  // Finish and save file
   output.flush();
   output.close();
   println("✅ Data saved to data.csv!");
