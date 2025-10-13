@@ -15,10 +15,10 @@ void setup() {
 
 void brandsHatch()
 {
-    boolean showWaypoints = true;
+    boolean showWaypoints = false;
     boolean showPoints = true;
     boolean showSpeeds = true;
-    int steps = 100;
+    int steps = 40;
     int mTrackLength = 1944;
     double[] x = getXBrands();  //Get X
     double[] y = getYBrands();  //Get Y

@@ -55,7 +55,29 @@ void visualisation(double [] x, double [] y, double [][] speeds, int steps, bool
     for(int i = 0; i < steps; i++)
     {
       fill(0);
-      text(i, (float)speeds [i][0], (float) speeds [i][1]+ 10);
+      double slope = 0;
+      if(i<steps-1)
+      {
+        slope = (speeds [i+1][1]-speeds [i][1])/(speeds [i+1][0]-speeds [i][0]);
+      }
+      else
+      {
+        slope = (speeds [0][1]-speeds [i][1])/(speeds [0][0]-speeds [i][0]);
+      }
+      if(i==0 || i ==38)
+      {
+        slope = 0;
+      }
+      if(slope > 1 || slope < -1)
+      {
+        //println("Closer to vertical");
+        text(i, (float)speeds [i][0] +15, (float) speeds [i][1]);
+      }
+      else
+      {
+        //println("Closer to Horizontal");
+        text(i, (float)speeds [i][0], (float) speeds [i][1] + 16.5);
+      }
       drawPoints(speeds [i][0] , speeds [i][1], #FF0000, 5);
     }
   }
