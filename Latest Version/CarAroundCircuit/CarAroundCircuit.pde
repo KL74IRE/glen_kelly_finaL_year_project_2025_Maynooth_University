@@ -26,9 +26,9 @@ void brandsHatch()
     double [] [] trackPoints = drawTrack(x,y,20,21,steps); //X points, Y points, Start of 2nd Run, End of 2nd Run, Points for 1 lap, Length in m desired
     double [] [] radius = radius(trackPoints,steps,ratio);
     double [] [] speeds = maxSpeed(radius,steps);
-    checkPoints(trackPoints,speeds,radius,steps);
     visualisation(x,y,speeds,steps,showWaypoints,showPoints,showSpeeds);
     carAroundTrack(trackPoints,speeds);
+    tests(trackPoints,speeds,radius,steps);
 }
 
 void basicCircle()
@@ -44,7 +44,7 @@ void basicCircle()
     double [] [] trackPoints = drawTrack(x,y,4,5,steps); //X points, Y points, Start of 2nd Run, End of 2nd Run, Points for 1 lap, Length in m desired
     double [] [] radius = radius(trackPoints,steps,ratio);
     double [] [] speeds = maxSpeed(radius,steps);
-    checkPoints(trackPoints,speeds,radius,steps);
     visualisation(x,y,speeds,steps,showWaypoints,showPoints,showSpeeds);
     carAroundTrack(trackPoints,speeds);
+    tests(trackPoints,speeds,radius,steps);
 }

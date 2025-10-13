@@ -10,8 +10,8 @@ double [] [] radius(double [] [] points, int steps, double ratio)
                                points [1]      [0],  points [1]      [1]);
     radius [0] [2] = (radius [0] [2] /ratio);
                                
-    radius [steps-1] [0] = points [0] [0];
-    radius [steps-1] [1] = points [0] [1];
+    radius [steps-1] [0] = points [steps-1] [0];
+    radius [steps-1] [1] = points [steps-1] [1];
     radius [steps-1] [2] = getRadius(points [steps-2][0],  points [steps-2][1],
                                      points [steps-1][0],  points [steps-1][1],
                                      points [1]      [0],  points [1]      [1]);
