@@ -1,16 +1,19 @@
-//CIRCLE
-double [] getXCircle()
+void brandsHatch(int steps)
 {
- double[] x = {900, 1000, 1100, 1000, 900, 1000, 1100, 1000, 900, 1000, 1100, 1000, 900};
- 
- return x;
-}
- 
-double [] getYCircle()
-{
- double[] y = {200, 100, 200, 300, 200, 100, 200, 300, 200, 100, 200, 300, 200};
- 
-  return y;
+    boolean showWaypoints = false;
+    boolean showPoints = false;
+    boolean showSpeeds = false;
+    int mTrackLength = 1944;
+    double[] x = getXBrands();  //Get X
+    double[] y = getYBrands();  //Get Y
+    double ratio = ratio(x,y,20,21,steps,mTrackLength);
+    double [] [] trackPoints = drawTrack(x,y,20,21,steps); //X points, Y points, Start of 2nd Run, End of 2nd Run, Points for 1 lap, Length in m desired
+    double [] [] radius = radius(trackPoints,steps,ratio);
+    double [] [] speeds = maxSpeed(radius,steps);
+    visualisation(x,y,speeds,steps,showWaypoints,showPoints,showSpeeds);
+    carAroundTrack(trackPoints,speeds);
+    saveSpeedsToExcel(radius,steps,getTyres());
+    tests(trackPoints,speeds,radius,steps);
 }
 
 //BRANDS HATCH

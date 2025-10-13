@@ -36,7 +36,7 @@ double [] [] radius(double [] [] points, int steps, double ratio)
   }
   
   return radius; //returned in meters
- }
+}
 
 double getRadius(double x1, double y1, double x2, double y2, double x3, double y3)
 {

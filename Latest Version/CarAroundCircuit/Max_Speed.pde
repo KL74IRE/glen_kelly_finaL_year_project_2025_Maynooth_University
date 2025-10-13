@@ -20,8 +20,6 @@ double [] [] maxSpeed(double [] [] radius, int steps)
     //println("Point: " + nf((float)i,3,0) +", x = " + nf(i, 3, 0) + ", y = " + nf((float)(radius[i][0]), 3, 5) + ", radius = " + nf((float)(radius[i][1]), 4, 5) + "m" + ", Max Speed (Soft): " + nf((float)(Speeds[i][3]), 4, 3) + "km/h" + " (Medium): " + nf((float)(Speeds[i][4]), 4, 3) + "km/h" + " (Hard): " + nf((float)(Speeds[i][5]), 4, 3) + "km/h");
   }
   
-  saveSpeedsToExcel(radius,steps,tyres);
-  
   return Speeds;
 }
 
@@ -52,4 +50,5 @@ void saveSpeedsToExcel(double[][] radius, int steps, double[] tyres) {
   output.flush();
   output.close();
   println("✅ Data saved to data.csv!");
+  println("  ");
 }

@@ -21,7 +21,7 @@ double [] [] drawTrack(double [] x, double [] y, int start, int end, int steps)
     double tx = splineX.value(t);
     double ty = splineY.value(t);
     vertex((float)tx, (float)ty);
-    drawPoints(tx,ty, #0000FF, 10);
+    //drawPoints(tx,ty, #0000FF, 10);
     trackPoints [j] [0] = tx;
     trackPoints [j] [1] = ty;
     j++;
