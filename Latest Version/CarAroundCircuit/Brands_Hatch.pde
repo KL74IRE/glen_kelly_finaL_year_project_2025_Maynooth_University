@@ -1,8 +1,5 @@
-void brandsHatch(int steps)
+void brandsHatch(int steps, boolean excel,boolean showWaypoints,boolean showPoints,boolean showSpeeds)
 {
-    boolean showWaypoints = false;
-    boolean showPoints = false;
-    boolean showSpeeds = false;
     int mTrackLength = 1944;
     double[] x = getXBrands();  //Get X
     double[] y = getYBrands();  //Get Y
@@ -12,7 +9,7 @@ void brandsHatch(int steps)
     double [] [] speeds = maxSpeed(radius,steps);
     visualisation(x,y,speeds,steps,showWaypoints,showPoints,showSpeeds);
     carAroundTrack(trackPoints,speeds);
-    saveSpeedsToExcel(radius,steps,getTyres());
+    if(excel){saveSpeedsToExcel(radius,steps,getTyres());}
     tests(trackPoints,speeds,radius,steps);
 }
 

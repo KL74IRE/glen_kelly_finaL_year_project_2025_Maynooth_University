@@ -1,8 +1,5 @@
-void basicCircle(int steps)
+void basicCircle(int steps,boolean excel,boolean showWaypoints,boolean showPoints,boolean showSpeeds)
 {
-    boolean showWaypoints = true;
-    boolean showPoints = true;
-    boolean showSpeeds = true;
     int mTrackLength = 1944;
     double[] x = getXCircle();  //Get X
     double[] y = getYCircle();  //Get Y
@@ -12,6 +9,7 @@ void basicCircle(int steps)
     double [] [] speeds = maxSpeed(radius,steps);
     visualisation(x,y,speeds,steps,showWaypoints,showPoints,showSpeeds);
     carAroundTrack(trackPoints,speeds);
+    if(excel){saveSpeedsToExcel(radius,steps,getTyres());}
     tests(trackPoints,speeds,radius,steps);
 }
 
