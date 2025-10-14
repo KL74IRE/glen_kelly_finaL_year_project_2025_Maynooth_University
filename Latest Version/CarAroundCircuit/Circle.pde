@@ -3,8 +3,10 @@ void basicCircle(int steps,boolean excel,boolean showWaypoints,boolean showPoint
     int mTrackLength = 1944;
     double[] x = getXCircle();  //Get X
     double[] y = getYCircle();  //Get Y
-    double ratio = ratio(x,y,4,5,steps,mTrackLength);
-    double [] [] trackPoints = drawTrack(x,y,4,5,steps); //X points, Y points, Start of 2nd Run, End of 2nd Run, Points for 1 lap, Length in m desired
+    int start = 4;
+    int end = 5;
+    double ratio = ratio(x,y,start,end,steps,mTrackLength);
+    double [] [] trackPoints = drawTrack(x,y,start,end,steps); //X points, Y points, Start of 2nd Run, End of 2nd Run, Points for 1 lap, Length in m desired
     double [] [] radius = radius(trackPoints,steps,ratio);
     double [] [] speeds = maxSpeed(radius,steps);
     visualisation(x,y,speeds,steps,showWaypoints,showPoints,showSpeeds);
@@ -16,14 +18,14 @@ void basicCircle(int steps,boolean excel,boolean showWaypoints,boolean showPoint
 //CIRCLE
 double [] getXCircle()
 {
- double[] x = {900, 1000, 1100, 1000, 900, 1000, 1100, 1000, 900, 1000, 1100, 1000, 900};
+ double[] x = {500, 800, 1100, 800, 500, 800, 1100, 800, 500, 800, 1100, 800, 500};
  
  return x;
 }
  
 double [] getYCircle()
 {
- double[] y = {200, 100, 200, 300, 200, 100, 200, 300, 200, 100, 200, 300, 200};
+ double[] y = {400, 100, 400, 700, 400, 100, 400, 700, 400, 100, 400, 700, 400};
  
   return y;
 }

@@ -26,8 +26,12 @@ double [] [] drawTrack(double [] x, double [] y, int start, int end, int steps)
     trackPoints [j] [1] = ty;
     j++;
     }
-
+  trackPoints [steps-1][0] = trackPoints [0][0];
+  trackPoints [steps-1][1] = trackPoints [0][1];
+  vertex((float)x[0],(float)y[0]);
   endShape();
+  
+
 
   return(trackPoints);
 }
@@ -77,6 +81,38 @@ void visualisation(double [] x, double [] y, double [][] speeds, int steps, bool
       {
         //println("Closer to Horizontal");
         text(i, (float)speeds [i][0], (float) speeds [i][1] + 16.5);
+      }
+      drawPoints(speeds [i][0] , speeds [i][1], #FF0000, 5);
+    }
+  }
+
+  if(speed)
+  {
+    for(int i = 0; i < steps; i++)
+    {
+      fill(0);
+      double slope = 0;
+      if(i<steps-1)
+      {
+        slope = (speeds [i+1][1]-speeds [i][1])/(speeds [i+1][0]-speeds [i][0]);
+      }
+      else
+      {
+        slope = (speeds [0][1]-speeds [i][1])/(speeds [0][0]-speeds [i][0]);
+      }
+      if(slope > 1 || slope < -1)
+      {
+        //println("Closer to vertical");
+        text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0] +15, (float) speeds [i][1]);
+      }
+      else if(i==0)
+      {
+        text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0], (float) speeds [i][1]-10);
+      }
+      else
+      {
+        //println("Closer to Horizontal");
+        text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0], (float) speeds [i][1] + 16.5);
       }
       drawPoints(speeds [i][0] , speeds [i][1], #FF0000, 5);
     }

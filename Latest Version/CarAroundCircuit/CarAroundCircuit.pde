@@ -6,13 +6,15 @@ PolynomialSplineFunction splineX;
 PolynomialSplineFunction splineY;
 
 void setup() {
-  size(1280, 800);
+  size(1920, 980);
   background(255);
-  int steps = 5000000;
+  int steps = 2000000;
   boolean excel = false;
   boolean showWaypoints = false;
-  boolean showPoints = false;
+  boolean showPoints = true;
   boolean showSpeeds = false;
-  brandsHatch(steps,excel,showWaypoints,showPoints,showSpeeds);
+  
+  //editingMode();
+  //brandsHatch(steps,excel,showWaypoints,showPoints,showSpeeds);
   basicCircle(steps,excel,showWaypoints,showPoints,showSpeeds);
 }
