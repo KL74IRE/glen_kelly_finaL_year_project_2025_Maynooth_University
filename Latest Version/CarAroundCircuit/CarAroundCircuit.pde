@@ -11,10 +11,10 @@ void setup() {
   int steps = 2000000;
   boolean excel = false;
   boolean showWaypoints = false;
-  boolean showPoints = true;
+  boolean showPoints = false;
   boolean showSpeeds = false;
   
-  //editingMode();
+  editingMode();
   //brandsHatch(steps,excel,showWaypoints,showPoints,showSpeeds);
-  basicCircle(steps,excel,showWaypoints,showPoints,showSpeeds);
+  //basicCircle(steps,excel,showWaypoints,showPoints,showSpeeds);
 }

@@ -34,15 +34,15 @@ void checkPoints(double [] [] trackPoints,double [] [] speeds, double [] [] radi
    }
    if(flag)
    {
-     //System.out.println("Test: checkPoints has failed at point: " + point);
-     //System.out.println("     x: Track Points: " + trackPoints [point][0] + ", Radius: " + radius [point][0] + ", Speeds: " + speeds [point][0]);
-     //System.out.println("     y: Track Points: " + trackPoints [point][1] + ", Radius: " + radius [point][1] + ", Speeds: " + speeds [point][1]);
+     System.out.println("Test: checkPoints has failed at point: " + point);
+     System.out.println("     x: Track Points: " + trackPoints [point][0] + ", Radius: " + radius [point][0] + ", Speeds: " + speeds [point][0]);
+     System.out.println("     y: Track Points: " + trackPoints [point][1] + ", Radius: " + radius [point][1] + ", Speeds: " + speeds [point][1]);
    }
    else
    {
-     for( int i = 0; i< steps; i++){
-     System.out.println("     x: Track Points: " + trackPoints [i][0] + ", Radius: " + radius [i][0] + ", Speeds: " + speeds [i][0]);
-     System.out.println("     y: Track Points: " + trackPoints [i][1] + ", Radius: " + radius [i][1] + ", Speeds: " + speeds [i][1]);}
+     //for( int i = 0; i< steps; i++){
+     //System.out.println("     x: Track Points: " + trackPoints [i][0] + ", Radius: " + radius [i][0] + ", Speeds: " + speeds [i][0]);
+     //System.out.println("     y: Track Points: " + trackPoints [i][1] + ", Radius: " + radius [i][1] + ", Speeds: " + speeds [i][1]);}
      System.out.println("Test: checkPoints has passed!");
    }
 }
