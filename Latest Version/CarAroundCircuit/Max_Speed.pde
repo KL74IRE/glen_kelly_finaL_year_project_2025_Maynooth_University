@@ -20,6 +20,13 @@ double [] [] maxSpeed(double [] [] radius, int steps)
     //println("Point: " + nf((float)i,3,0) +", x = " + nf(i, 3, 0) + ", y = " + nf((float)(radius[i][0]), 3, 5) + ", radius = " + nf((float)(radius[i][1]), 4, 5) + "m" + ", Max Speed (Soft): " + nf((float)(Speeds[i][3]), 4, 3) + "km/h" + " (Medium): " + nf((float)(Speeds[i][4]), 4, 3) + "km/h" + " (Hard): " + nf((float)(Speeds[i][5]), 4, 3) + "km/h");
   }
   
+    Speeds [steps-1] [0] = Speeds [0] [0];
+    Speeds [steps-1] [1] = Speeds [0] [1];
+    Speeds [steps-1] [2] = Speeds [0] [2];
+    Speeds [steps-1] [3] = Speeds [0] [3];
+    Speeds [steps-1] [4] = Speeds [0] [4];
+    Speeds [steps-1] [5] = Speeds [0] [5];
+  
   return Speeds;
 }
 

@@ -2,7 +2,7 @@ PImage img;
 
 void editingMode()
 {
-  editBrands();
+  //editBrands();
   //editCircle();
 }
 

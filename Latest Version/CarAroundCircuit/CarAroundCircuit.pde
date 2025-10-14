@@ -8,13 +8,13 @@ PolynomialSplineFunction splineY;
 void setup() {
   size(1920, 980);
   background(255);
-  int steps = 2000000;
+  int steps = 20;
   boolean excel = false;
   boolean showWaypoints = false;
   boolean showPoints = false;
-  boolean showSpeeds = false;
+  boolean showSpeeds = true;
   
-  editingMode();
-  //brandsHatch(steps,excel,showWaypoints,showPoints,showSpeeds);
+  //editingMode();
+  brandsHatch(steps,excel,showWaypoints,showPoints,showSpeeds);
   //basicCircle(steps,excel,showWaypoints,showPoints,showSpeeds);
 }

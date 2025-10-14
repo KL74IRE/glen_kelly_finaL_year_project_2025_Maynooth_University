@@ -58,7 +58,7 @@ void visualisation(double [] x, double [] y, double [][] speeds, int steps, bool
   {
     for(int i = 0; i < steps; i++)
     {
-      fill(0);
+      fill(#FF0000);
       double slope = 0;
       if(i<steps-1)
       {
@@ -70,8 +70,15 @@ void visualisation(double [] x, double [] y, double [][] speeds, int steps, bool
       }
       if(slope > 1 || slope < -1)
       {
+        if(i % 2 == 0)
+        {
         //println("Closer to vertical");
         text(i, (float)speeds [i][0] +15, (float) speeds [i][1]);
+        }
+        else
+        {
+        text(i, (float)speeds [i][0] -15, (float) speeds [i][1]);
+        }
       }
       else if(i==0)
       {
@@ -79,8 +86,15 @@ void visualisation(double [] x, double [] y, double [][] speeds, int steps, bool
       }
       else
       {
-        //println("Closer to Horizontal");
-        text(i, (float)speeds [i][0], (float) speeds [i][1] + 16.5);
+        if(i % 2 == 0)
+        {
+        //println("Closer to vertical");
+        text(i, (float)speeds [i][0], (float) speeds [i][1] +16.5);
+        }
+        else
+        {
+        text(i, (float)speeds [i][0], (float) speeds [i][1] -16.5);
+        }
       }
       drawPoints(speeds [i][0] , speeds [i][1], #FF0000, 5);
     }
@@ -90,7 +104,7 @@ void visualisation(double [] x, double [] y, double [][] speeds, int steps, bool
   {
     for(int i = 0; i < steps; i++)
     {
-      fill(0);
+      fill(#FF0000);
       double slope = 0;
       if(i<steps-1)
       {
@@ -103,16 +117,26 @@ void visualisation(double [] x, double [] y, double [][] speeds, int steps, bool
       if(slope > 1 || slope < -1)
       {
         //println("Closer to vertical");
+        if(i % 2 == 0){
         text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0] +15, (float) speeds [i][1]);
+        }
+        else
+        {
+        text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0] -65, (float) speeds [i][1]);
+        }
       }
       else if(i==0)
       {
-        text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0], (float) speeds [i][1]-10);
+        text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0], (float) speeds [i][1]-5);
       }
       else
       {
+        if(i % 2 == 0){
         //println("Closer to Horizontal");
         text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0], (float) speeds [i][1] + 16.5);
+        }else{
+        text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0], (float) speeds [i][1] - 16.5);
+        }
       }
       drawPoints(speeds [i][0] , speeds [i][1], #FF0000, 5);
     }
