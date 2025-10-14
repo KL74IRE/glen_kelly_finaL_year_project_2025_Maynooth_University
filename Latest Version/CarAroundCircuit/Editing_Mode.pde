@@ -4,6 +4,7 @@ void editingMode()
 {
   //editBrands();
   //editCircle();
+    editBahrain();
 }
 
 void editBrands()
@@ -13,6 +14,17 @@ void editBrands()
   image(img, 150, 0);
   double [] x = getXBrands();
   double [] y = getYBrands();
+  for(int i = 0; i < x.length; i++){
+  drawPoints(x[i],y[i], #9D00FF, 25);
+  }
+}
+
+void editBahrain()
+{
+  img = loadImage("bahrain.png");
+  image(img, 0, -50);
+  double [] x = getXBahrain();
+  double [] y = getYBahrain();
   for(int i = 0; i < x.length; i++){
   drawPoints(x[i],y[i], #9D00FF, 25);
   }

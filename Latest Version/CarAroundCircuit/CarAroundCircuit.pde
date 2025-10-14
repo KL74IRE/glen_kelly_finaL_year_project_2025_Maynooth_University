@@ -14,7 +14,8 @@ void setup() {
   boolean showPoints = false;
   boolean showSpeeds = true;
   
-  //editingMode();
-  brandsHatch(steps,excel,showWaypoints,showPoints,showSpeeds);
+  editingMode();
+  //brandsHatch(steps,excel,showWaypoints,showPoints,showSpeeds);
   //basicCircle(steps,excel,showWaypoints,showPoints,showSpeeds);
+  //bahrain(steps,excel,showWaypoints,showPoints,showSpeeds);
 }
