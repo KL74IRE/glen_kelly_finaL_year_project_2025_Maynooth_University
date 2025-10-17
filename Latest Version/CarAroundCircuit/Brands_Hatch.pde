@@ -1,3 +1,11 @@
+/*
+Method used to initialise the Brands Hatch Indy circuit,
+
+Method should posses track length,
+should grab the co-ordinates of the manually inputed waypoints,
+should posses the position of the waypoint at the start and end of the 2nd spline pass, in order to get a smooth 
+*/
+
 void brandsHatch(int steps, boolean excel,boolean showWaypoints,boolean showPoints,boolean showSpeeds)
 {
     int mTrackLength = 1944;
@@ -24,20 +32,3 @@ double [] getYBrands()
                 850, 857, 797, 600, 400, 130, 88,  210, 450, 540, 600, 638, 648, 645, 627,  590,  510,  420,  370,  430,  560,  670,  764,  835, 850};
   return y;
 }
-
-////BRANDS HATCH OLD
-//double [] getXBrands()
-//{
-//  double[] x = {395, 200, 110, 88, 112, 175, 240, 270, 215, 235, 310, 400, 520, 555, 580, 630, 690, 765, 705, 600,
-//                395, 200, 110, 88, 112, 175, 240, 270, 215, 235, 310, 400, 520, 555, 580, 630, 690, 765, 705, 600,
-//                395, 200, 110, 88, 112, 175, 240, 270, 215, 235, 310, 400, 520, 555, 580, 630, 690, 765, 705, 600, 395};
-//  return x;
-//}
-
-//double [] getYBrands()
-//{
-//  double[] y = {470, 470, 410, 320, 250, 130, 94, 160, 280, 345, 365, 370, 362, 332, 280, 240, 240, 300, 400, 460,
-//                470, 470, 410, 320, 250, 130, 94, 160, 280, 345, 365, 370, 362, 332, 280, 240, 240, 300, 400, 460,
-//                470, 470, 410, 320, 250, 130, 94, 160, 280, 345, 365, 370, 362, 332, 280, 240, 240, 300, 400, 460, 470};
-//  return y;
-//}

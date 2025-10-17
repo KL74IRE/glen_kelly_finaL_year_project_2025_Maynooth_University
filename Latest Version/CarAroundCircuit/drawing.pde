@@ -1,3 +1,8 @@
+import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
+import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
+PolynomialSplineFunction splineX;
+PolynomialSplineFunction splineY;
+
 double [] [] drawTrack(double [] x, double [] y, int start, int end, int steps)
 {
   double[] s = new double[x.length];
