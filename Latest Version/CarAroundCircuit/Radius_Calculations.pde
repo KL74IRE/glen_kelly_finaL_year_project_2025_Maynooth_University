@@ -1,58 +1,66 @@
+/*
+Method to take in points, steps and ratio of pixels to meters and return radius values in meters
+
+Method should be able to setup a 2D array to be able to hold x,y and radius values,
+should be able to individually calculate first and last radius values due to looping,
+should be able to calculate the rest of the points within a loop
+should be able to convert all radius values to meters from pixels
+*/
+
 double [] [] radius(double [] [] points, int steps, double ratio)
 {
-  double radius [] [] = new double [steps] [3];
+
+  double radius [] [] = new double [steps] [3];                                           //Set up 2D array to be able to hold x, y and radius
+
+  radius [0] [0] = (points [0] [0]);                                                      //Set x value
+  radius [0] [1] = (points [0] [1]);                                                      //Set y value
+  radius [0] [2] = getRadius(points [steps-2][0],  points [steps-2][1],                   //Get radius using 3 points (x1, y1, x2, y2, x3, y3)
+                              points [0]      [0],  points [0]      [1],
+                              points [1]      [0],  points [1]      [1]);
+  radius [0] [2] = (radius [0] [2] /ratio);                                               //Convert radius from pixels into meters
+                              
+  radius [steps-1] [0] = points [steps-1] [0];                                            //Set x value
+  radius [steps-1] [1] = points [steps-1] [1];                                            //Set y value
+  radius [steps-1] [2] = getRadius(points [steps-2][0],  points [steps-2][1],             //Get radius using 3 points (x1, y1, x2, y2, x3, y3)
+                                    points [steps-1][0],  points [steps-1][1],
+                                    points [1]      [0],  points [1]      [1]);
+  radius [steps-1] [2] = (radius [steps-2] [2] /ratio);
    
-    //print(ratio);
-    radius [0] [0] = (points [0] [0]);
-    radius [0] [1] = (points [0] [1]);
-    radius [0] [2] = getRadius(points [steps-2][0],  points [steps-2][1],
-                               points [0]      [0],  points [0]      [1],
-                               points [1]      [0],  points [1]      [1]);
-    radius [0] [2] = (radius [0] [2] /ratio);
-                               
-    radius [steps-1] [0] = points [steps-1] [0];
-    radius [steps-1] [1] = points [steps-1] [1];
-    radius [steps-1] [2] = getRadius(points [steps-2][0],  points [steps-2][1],
-                                     points [steps-1][0],  points [steps-1][1],
-                                     points [1]      [0],  points [1]      [1]);
-    radius [steps-1] [2] = (radius [steps-2] [2] /ratio);
-   
-  for(int i = 1; i < (steps -1) ; i++)
+  for(int i = 1; i < (steps -1) ; i++)                                                    //Loop through remaining points
   {
-    //print("Point: " + i + ", ");
-    radius [i] [0] = points [i] [0];  //x
-    radius [i] [1] = points [i] [1];  //y
-    radius [i] [2] = getRadius(points [i-1][0],  points [i-1][1],
+    radius [i] [0] = points [i] [0];                                                        //Set x value
+    radius [i] [1] = points [i] [1];                                                        //Set y value
+    radius [i] [2] = getRadius(points [i-1][0],  points [i-1][1],                           //Get radius using 3 points (x1, y1, x2, y2, x3, y3)
                                points [i]  [0],  points [i]  [1],
                                points [i+1][0],  points [i+1][1]);
-    radius [i] [2] = (radius [i] [2] /ratio);
-    
-    //println("x: " + radius [i] [0] + ", y: " + radius [i] [1] + ", radius: " +radius [i] [2]);
+    radius [i] [2] = (radius [i] [2] /ratio);                                               //Convert radius from pixels into meters
   }
   
-  for(int i =0; i<steps-1; i++)
-  {
-  //println("x: " + radius [i] [0] + ", y: " + radius [i] [1] + ", radius: " +radius [i] [2]);
-  }
-  
-  return radius; //returned in meters
+  return radius;                                                                          //return radius in meters
 }
+
+/*
+Method to take in 3 points and calculate the radius by getting the circumcenter and length forumla
+
+Method should calculate the determinant of the triangle created,
+should calculate the circumcenter of the triangle,
+should calculate the radius of the given circle by getting the distance from (x1,y1) to (cx, cy)
+should return the radius in terms of pixels
+*/
 
 double getRadius(double x1, double y1, double x2, double y2, double x3, double y3)
 {
-  double d = 2 * (x1*(y2 - y3) + x2*(y3 - y1) + x3*(y1 - y2));
+  double d = 2 * (x1*(y2 - y3) + x2*(y3 - y1) + x3*(y1 - y2));                            //Calculate the determinant of the triangle
   
-  double cx = ((x1*x1 + y1*y1)*(y2 - y3) +
+  double cx = ((x1*x1 + y1*y1)*(y2 - y3) +                                                //Calculate the x value of the circumcenter
                (x2*x2 + y2*y2)*(y3 - y1) +
                (x3*x3 + y3*y3)*(y1 - y2)) / d;
   
-  double cy = ((x1*x1 + y1*y1)*(x3 - x2) +
+  double cy = ((x1*x1 + y1*y1)*(x3 - x2) +                                                //Calculate the x value of the circumcenter
                (x2*x2 + y2*y2)*(x1 - x3) +
                (x3*x3 + y3*y3)*(x2 - x1)) / d;
 
-  double radius = Math.sqrt((x1 - cx)*(x1 - cx) + (y1 - cy)*(y1 - cy));
+  double radius = Math.sqrt((x1 - cx)*(x1 - cx) + (y1 - cy)*(y1 - cy));                   //Calculate the radius by using the distance formula
   
-  //println("x1: " + nf((float)x1,3,3) + ", y1: " + nf((float)y1,3,3) + ", x2: " + nf((float)x2,3,3) + ", y2: " + nf((float)y2,3,3) + ", x3: " + nf((float)x3,3,3) + ", y3: " + nf((float)y3,3,3) + ", radius: " +radius);
-  
-  return radius; //radius gotten in pixels
+  return radius;                                                                          //return the radius in pixels
 }
