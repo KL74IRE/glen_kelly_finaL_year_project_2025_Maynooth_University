@@ -11,8 +11,8 @@ void bahrain(int steps, boolean excel,boolean showWaypoints,boolean showPoints,b
     int mTrackLength = 5412;                                                                                //Bahrain GP Circuit Length of 5412 meters
     double[] x = getXBahrain();                                                                             //Retrieve x co-ordinates of Bahrain GP Circuit
     double[] y = getYBahrain();                                                                             //Retrieve y co-ordinates of Bahrain GP Circuit
-    int start = 33;                                                                                         //Start of 2nd Spline pass at point 33
-    int end = 35;                                                                                           //End of 2nd Spine pass at point array.length - 35
+    int start = 34;                                                                                         //Start of 2nd Spline pass at point 33
+    int end = 36;                                                                                           //End of 2nd Spine pass at point array.length - 35
     main(x,y,start,end,steps,mTrackLength,showWaypoints,showPoints,showSpeeds,excel);                       //Call Main method in order to calculate splines, draw track and run tests
 }
 

@@ -26,6 +26,16 @@ double [] [] maxSpeed(double [] [] radius, int steps)
     Speeds [steps-1] [3] = Speeds [0] [3];                                                    //Set soft speed for Start Finish points to equal
     Speeds [steps-1] [4] = Speeds [0] [4];                                                    //Set medium speed for Start Finish points to equal
     Speeds [steps-1] [5] = Speeds [0] [5];                                                    //Set hard speed for Start Finish points to equal
+    
+  for(int i = 0; i < steps; i++)
+  {
+    if(Speeds [i] [3] > 360)
+    {Speeds [i] [3] = 365;}
+    if(Speeds [i] [4] > 360)
+    {Speeds [i] [4] = 365;}
+    if(Speeds [i] [5] > 360)
+    {Speeds [i] [5] = 365;}
+  }
   
   return Speeds;                                                                              //return data
 }

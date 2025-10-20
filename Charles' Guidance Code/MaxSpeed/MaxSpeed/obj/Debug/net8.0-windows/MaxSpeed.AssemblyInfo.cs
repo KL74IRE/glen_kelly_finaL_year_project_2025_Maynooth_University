@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MaxSpeed")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5850af3c7b290b05411d14975156a484895ed8bd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+846d1afbb7e44fb48760b5c6bd489aeae9845f5c")]
 [assembly: System.Reflection.AssemblyProductAttribute("MaxSpeed")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MaxSpeed")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -124,23 +124,23 @@ void visualisation(double [] x, double [] y, double [][] speeds, int steps, bool
       if(slope > 1 || slope < -1)
       {
         if(i % 2 == 0){
-        text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0] +15, (float) speeds [i][1]);
+        text(nf((float)speeds[i][4],3,1), (float)speeds [i][0] +15, (float) speeds [i][1]);
         }
         else
         {
-        text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0] -65, (float) speeds [i][1]);
+        text(nf((float)speeds[i][4],3,1), (float)speeds [i][0] -65, (float) speeds [i][1]);
         }
       }
       else if(i==0)
       {
-        text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0], (float) speeds [i][1]-5);
+        text(nf((float)speeds[i][4],3,1), (float)speeds [i][0], (float) speeds [i][1]-5);
       }
       else
       {
         if(i % 2 == 0){
-        text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0], (float) speeds [i][1] + 16.5);
+        text(nf((float)speeds[i][4],3,1), (float)speeds [i][0], (float) speeds [i][1] + 16.5);
         }else{
-        text( (float)speeds [i][4] + " Km/h", (float)speeds [i][0], (float) speeds [i][1] - 16.5);
+        text(nf((float)speeds[i][4],3,1), (float)speeds [i][0], (float) speeds [i][1] - 16.5);
         }
       }
       drawPoints(speeds [i][0] , speeds [i][1], #FF0000, 5);

@@ -12,7 +12,7 @@ void brandsHatch(int steps, boolean excel,boolean showWaypoints,boolean showPoin
     double[] x = getXBrands();                                                                              //Retrieve x co-ordinates of Brands Hatch Indy Circuit
     double[] y = getYBrands();                                                                              //Retrieve y co-ordinates of Brands Hatch Indy Circuit
     int start = 24;                                                                                         //Start of 2nd Spline pass at point 33
-    int end = 25;                                                                                           //End of 2nd Spine pass at point array.length - 35
+    int end = 26;                                                                                           //End of 2nd Spine pass at point array.length - 35
     main(x,y,start,end,steps,mTrackLength,showWaypoints,showPoints,showSpeeds,excel);                       //Call Main method in order to calculate splines, draw track and run tests
 }
 
