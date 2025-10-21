@@ -53,7 +53,7 @@ void drawPoints(double x, double y, color c, double weight) {
   strokeWeight(2);
 }
 
-void visualisation(double [] x, double [] y, double [][] speeds, int steps, boolean waypoints, boolean points, boolean speed)
+void visualisation(double [] x, double [] y, double [][] speeds, double [] [] telemetry, int steps, boolean waypoints, boolean points, boolean speed, boolean telemetryS)
 {
   if(waypoints)
   {
@@ -106,7 +106,7 @@ void visualisation(double [] x, double [] y, double [][] speeds, int steps, bool
       drawPoints(speeds [i][0] , speeds [i][1], #FF0000, 5);
     }
   }
-
+   textSize(8); 
   if(speed)
   {
     for(int i = 0; i < steps; i++)
@@ -124,26 +124,66 @@ void visualisation(double [] x, double [] y, double [][] speeds, int steps, bool
       if(slope > 1 || slope < -1)
       {
         if(i % 2 == 0){
-        text(nf((float)speeds[i][4],3,1), (float)speeds [i][0] +15, (float) speeds [i][1]);
+        text(nf((float)speeds[i][2],3,1), (float)speeds [i][0] +15, (float) speeds [i][1]);
         }
         else
         {
-        text(nf((float)speeds[i][4],3,1), (float)speeds [i][0] -65, (float) speeds [i][1]);
+        text(nf((float)speeds[i][2],3,1), (float)speeds [i][0] -65, (float) speeds [i][1]);
         }
       }
       else if(i==0)
       {
-        text(nf((float)speeds[i][4],3,1), (float)speeds [i][0], (float) speeds [i][1]-5);
+        text(nf((float)speeds[i][2],3,1), (float)speeds [i][0], (float) speeds [i][1]-5);
       }
       else
       {
         if(i % 2 == 0){
-        text(nf((float)speeds[i][4],3,1), (float)speeds [i][0], (float) speeds [i][1] + 16.5);
+        text(nf((float)speeds[i][2],3,1), (float)speeds [i][0], (float) speeds [i][1] + 16.5);
         }else{
-        text(nf((float)speeds[i][4],3,1), (float)speeds [i][0], (float) speeds [i][1] - 16.5);
+        text(nf((float)speeds[i][2],3,1), (float)speeds [i][0], (float) speeds [i][1] - 16.5);
         }
       }
       drawPoints(speeds [i][0] , speeds [i][1], #FF0000, 5);
+    }
+  }
+  
+  if(telemetryS)
+  {
+    for(int i = 0; i < steps; i++)
+    {
+      fill(#4B0082);
+      double slope = 0;
+      if(i<steps-1)
+      {
+        slope = (telemetry [i+1][1]-telemetry [i][1])/(telemetry [i+1][0]-telemetry [i][0]);
+      }
+      else
+      {
+        slope = (telemetry [0][1]-telemetry [i][1])/(telemetry [0][0]-telemetry [i][0]);
+      }
+      if(slope > 1 || slope < -1)
+      {
+        if(i % 2 == 0){
+        text(nf((float)telemetry[i][2],3,1), (float)telemetry [i][0] +35, (float) telemetry [i][1]);
+        }
+        else
+        {
+        text(nf((float)telemetry[i][2],3,1), (float)telemetry [i][0] -85, (float) telemetry [i][1]);
+        }
+      }
+      else if(i==0)
+      {
+        text(nf((float)telemetry[i][2],3,1), (float)telemetry [i][0], (float) telemetry [i][1]-25);
+      }
+      else
+      {
+        if(i % 2 == 0){
+        text(nf((float)telemetry[i][2],3,1), (float)telemetry [i][0], (float) telemetry [i][1] + 36.5);
+        }else{
+        text(nf((float)telemetry[i][2],3,1), (float)telemetry [i][0], (float) telemetry [i][1] - 36.5);
+        }
+      }
+      drawPoints(telemetry [i][0] , telemetry [i][1], #FF0000, 5);
     }
   }
 }

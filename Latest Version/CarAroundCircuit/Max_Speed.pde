@@ -15,9 +15,9 @@ double [] [] maxSpeed(double [] [] radius, int steps)
     Speeds [i] [0] = radius [i] [0];                                                            //get x value
     Speeds [i] [1] = radius [i] [1];                                                            //get y value
     Speeds [i] [2] = radius [i] [2];                                                            //get radius
-    Speeds [i] [3] = (3.6*(Math.sqrt(((float)tyres[0])*(9.81)*((float)radius [i] [2]))));       //Calculate Soft tyre max speed
-    Speeds [i] [4] = (3.6*(Math.sqrt(((float)tyres[1])*(9.81)*((float)radius [i] [2]))));       //Calculate Medium tyre max speed
-    Speeds [i] [5] = (3.6*(Math.sqrt(((float)tyres[2])*(9.81)*((float)radius [i] [2]))));       //Calculate Hard tyre max speed
+    Speeds [i] [3] = ((Math.sqrt(((float)tyres[0])*(9.81)*((float)radius [i] [2]))));       //Calculate Soft tyre max speed
+    Speeds [i] [4] = ((Math.sqrt(((float)tyres[1])*(9.81)*((float)radius [i] [2]))));       //Calculate Medium tyre max speed
+    Speeds [i] [5] = ((Math.sqrt(((float)tyres[2])*(9.81)*((float)radius [i] [2]))));       //Calculate Hard tyre max speed
   }
   
     Speeds [steps-1] [0] = Speeds [0] [0];                                                    //Set x value for Start Finish points to equal
