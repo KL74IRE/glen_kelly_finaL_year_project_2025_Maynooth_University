@@ -17,7 +17,8 @@ void main(double [] x,double [] y,int start,int end, int steps,int mTrackLength,
     double [] [] radius = radius(trackPoints,steps,ratio);                              //Calls Method to retrieve radius of track points
     double [] [] speeds = maxSpeed(radius,steps);                                       //Calls Method to retrieve max speeds at track points
     double [] [] telemetry = carAroundTrack(speeds,ratio,steps);                        //Calls Method to move to next step and start a car simulation
-    visualisation(x, y, speeds, telemetry, steps, showWaypoints, showPoints, showSpeeds, telemetryS);     //Calls Method to visualise requested data
+    double lapTime = lapTime(telemetry,mTrackLength,steps);
+    visualisation(x, y, speeds, telemetry, steps, showWaypoints, showPoints, showSpeeds, telemetryS, lapTime);     //Calls Method to visualise requested data
     if(excel){saveSpeedsToExcel(radius,steps,getTyres(),telemetry);}                              //Calls a method to output speed data to excel
     tests(trackPoints,speeds,radius,steps);                                             //Calls a method to run tests
 }

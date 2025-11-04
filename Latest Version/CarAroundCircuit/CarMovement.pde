@@ -29,6 +29,8 @@ double [] [] carAroundTrack(double [] [] speeds,double ratio, double steps)
       telemetry[i][2] = speeds[i][3];
       println("TOO FAST! -> clamped to " + telemetry[i][2]);
     }
+  telemetry [(int)steps-1] [2] = telemetry [(int)steps-2] [2];
+  telemetry [0] [2] = telemetry [(int)steps-1] [2];
 
     println("point: (" + telemetry [i] [0] + "," + telemetry [i] [1]+ "), velocity: " + telemetry [i] [2]);
   }

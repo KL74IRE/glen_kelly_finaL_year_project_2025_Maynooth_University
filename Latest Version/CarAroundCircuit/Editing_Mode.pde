@@ -9,7 +9,7 @@ void editingMode()
 {
   //editBrands();                               //Edit Brands Hatch Indy Circuit
   //editCircle();                               //Edit Circle
-  editBahrain();                              //Edit Bahrain GP Circuit
+  //editBahrain();                              //Edit Bahrain GP Circuit
 }
 
 /*
