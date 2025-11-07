@@ -25,8 +25,8 @@ void setup() {                                                                  
   boolean showSpeeds = false;                                                        //If speeds at generated points should be displayed
   boolean telemetryS = true;
   boolean edit = true;                                                             //If editing mode should be entered
-  boolean brands = false;                                                           //If Brands Hatch should be initiated
-  boolean bahrain = true;                                                          //If Bahrain should be initiated
+  boolean brands = true;                                                           //If Brands Hatch should be initiated
+  boolean bahrain = false;                                                          //If Bahrain should be initiated
   boolean circle = false;                                                           //If a basic circle should be initiated
   
   if(edit){editingMode();}                                                          //If enabled enter editing mode

@@ -1,4 +1,4 @@
-double lapTime(double [] []telemetry, int mTrackLength,int steps)
+double [] lapTime(double [] []telemetry, int mTrackLength,int steps)
 {
   double segmentLength = mTrackLength/steps;
   double lapTime = 0;
@@ -13,6 +13,9 @@ double lapTime(double [] []telemetry, int mTrackLength,int steps)
     System.out.println("Step : " + i + ", Step Length = "+ segmentLength + ", Segment Speed = " + telemetry [i][2] + ", Segment Time = " + segmentTime + ", Total Time = " + lapTime + " = " + minutes + ":" + seconds);
     
   }
+  double [] lapTimeMS = new double [2];
+  lapTimeMS [0] = minutes;
+  lapTimeMS [1] = seconds;
   
-  return lapTime;
+  return lapTimeMS;
 }

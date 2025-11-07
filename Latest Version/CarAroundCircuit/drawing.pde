@@ -53,7 +53,7 @@ void drawPoints(double x, double y, color c, double weight) {
   strokeWeight(2);
 }
 
-void visualisation(double [] x, double [] y, double [][] speeds, double [] [] telemetry, int steps, boolean waypoints, boolean points, boolean speed, boolean telemetryS, double lapTime)
+void visualisation(double [] x, double [] y, double [][] speeds, double [] [] telemetry, int steps, boolean waypoints, boolean points, boolean speed, boolean telemetryS, double [] lapTime)
 {
   
   if(waypoints)
@@ -190,5 +190,6 @@ void visualisation(double [] x, double [] y, double [][] speeds, double [] [] te
   
   textSize(20); 
   fill(#FF0000);
-  text(Double.toString(lapTime), (float)50, (float)50);
+  String lap = String.format("%.0f:%05.2f", lapTime[0], lapTime[1]);
+  text(lap, (float)50, (float)50);
 }
