@@ -7,7 +7,7 @@ Method should enable whichever tracks are not commented out
 */
 void editingMode()
 {
-  //editBrands();                               //Edit Brands Hatch Indy Circuit
+  editBrands();                               //Edit Brands Hatch Indy Circuit
   //editCircle();                               //Edit Circle
   //editBahrain();                              //Edit Bahrain GP Circuit
 }
