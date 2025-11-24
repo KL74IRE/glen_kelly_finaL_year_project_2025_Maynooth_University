@@ -1,40 +1,42 @@
-double [] [] carAroundTrack(double [] [] speeds,double ratio, double steps)
+double[][] carAroundTrack(double[][] speeds, double ratio, double steps)
 {
-  double [] car = new double [3];
-  car [0] = getAcceleration();
-  car [1] = getDeceleration();
-  car [2] = 0;
-  double [] [] telemetry = new double [(int)steps][3];
-  telemetry [0] [0] = speeds [0] [0];
-  telemetry [0] [1] = speeds [0] [1];
-  telemetry [0] [2] = 0;
-  println("point: (" + telemetry [0] [0] + "," + telemetry [0] [1]+ "), velocity: " + telemetry [0] [2]);
-  
-  //s = (u*t) + (1/2)*(a)*(t*t)
-  //(v*v) = (u*u) + (2)*(a)*(s)
-  
-  
-  for(int i =1; i< steps-1; i++)
-  {
-    telemetry [i] [0] = speeds [i] [0];
-    telemetry [i] [1] = speeds [i] [1];
-    double x1 = telemetry [i] [0], x2 = telemetry [i+1] [0], y1 = telemetry [i] [1], y2 = telemetry [i+1] [1];
-    double s = sqrt((float)(((x2-x1)*(x2-x1)) + ((y2-y1)*(y2-y1))));
-    s = s / ratio;
-    println("sqrt(("+ x2 + "-" + x1 + ")^2 + ("+ y2 + "-" + y1 + ")^2)");
-    telemetry [i] [2] = sqrt((float)((telemetry [i-1] [2])*(telemetry [i-1] [2])+(2*car[0]*s)));
-    println("sqrt(("+ telemetry [i-1] [2] + ")^2 + ("+ 2 + "*" + car[0] + "*" + s + ")");
-    println("v_calc=" + telemetry[i][2] + "  v_max=" + speeds[i][3]);
-    if (telemetry[i][2] > speeds[i][3]) {
-      telemetry[i][2] = speeds[i][3];
-      println("TOO FAST! -> clamped to " + telemetry[i][2]);
-    }
-  telemetry [(int)steps-1] [2] = telemetry [(int)steps-2] [2];
-  telemetry [0] [2] = telemetry [(int)steps-1] [2];
+  double accel = getAcceleration();
+  double decel = getDeceleration();
 
-    println("point: (" + telemetry [i] [0] + "," + telemetry [i] [1]+ "), velocity: " + telemetry [i] [2]);
+  double[][] telemetry = new double[(int)steps][4];
+
+  telemetry[0][0] = speeds[0][0];
+  telemetry[0][1] = speeds[0][1];
+  telemetry[0][2] = 0.0;
+  telemetry[0][3] = 0.0;
+
+  for (int i = 1; i < steps; i++) {
+    telemetry[i][0] = speeds[i][0];
+    telemetry[i][1] = speeds[i][1];
+
+    float dx = (float)(telemetry[i][0] - telemetry[i-1][0]);
+    float dy = (float)(telemetry[i][1] - telemetry[i-1][1]);
+    float s  = (float)(Math.sqrt(dx*dx + dy*dy) / ratio);
+
+    float vPrev = (float)telemetry[i-1][2];
+
+    float vCalc = (float)Math.sqrt(vPrev * vPrev + 2f * (float)accel * s);
+    float vMax = (float)speeds[i][3];
+
+    telemetry[i][2] = Math.min(vCalc, vMax);
   }
-  
+
+  for (int i = (int)steps - 2; i >= 0; i--) {
+    float dx = (float)(telemetry[i+1][0] - telemetry[i][0]);
+    float dy = (float)(telemetry[i+1][1] - telemetry[i][1]);
+    float s  = (float)(Math.sqrt(dx*dx + dy*dy) / ratio);
+
+    float vNext = (float)telemetry[i+1][2];
+    float vBrake = (float)Math.sqrt(vNext * vNext + 2f * (float)decel * s);
+
+    if (vBrake < telemetry[i][2]) {
+      telemetry[i][2] = vBrake;
+    }
+  }
   return telemetry;
-  
 }
