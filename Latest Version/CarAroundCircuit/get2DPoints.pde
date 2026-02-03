@@ -1,4 +1,4 @@
-double[][][] get2DPoints(double[][] trackPoints, int steps)
+double[][][] get2DPoints(double[][] trackPoints, int steps, boolean trackLines)
 {
   double[][][] Points = new double[3][steps][2];
 
@@ -49,12 +49,16 @@ double[][][] get2DPoints(double[][] trackPoints, int steps)
     Points[2][i][0] = xA - offset * nx;
     Points[2][i][1] = yA - offset * ny;
 
-    stroke(#008080);
-    strokeWeight(5);
-    point((float)Points[0][i][0], (float)Points[0][i][1]);
-    point((float)Points[2][i][0], (float)Points[2][i][1]);
-    stroke(0);
-    strokeWeight(2);
+    if(trackLines)
+    {
+      stroke(#008080);
+      strokeWeight(5);
+      point((float)Points[0][i][0], (float)Points[0][i][1]);
+      point((float)Points[1][i][0], (float)Points[1][i][1]);
+      point((float)Points[2][i][0], (float)Points[2][i][1]);
+      stroke(0);
+      strokeWeight(2);
+    }
   }
 
   return Points;

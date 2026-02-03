@@ -1,49 +1,111 @@
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 
-PolynomialSplineFunction splineX;
-PolynomialSplineFunction splineY;
-
-double[][] drawTrack(double[] x, double[] y, int start, int end, int steps)
+double[][][] drawTrack3(double[] x, double[] y, int start, int end, int steps, double offset)
 {
   double[] s = new double[x.length];
   s[0] = 0;
   for (int i = 1; i < x.length; i++) {
     double dx = x[i] - x[i - 1];
     double dy = y[i] - y[i - 1];
-    s[i] = s[i - 1] + Math.sqrt(dx * dx + dy * dy);
+    double d  = Math.sqrt(dx * dx + dy * dy);
+    if (d == 0) d = 1e-9;
+    s[i] = s[i - 1] + d;
   }
 
   SplineInterpolator interpolator = new SplineInterpolator();
-  splineX = interpolator.interpolate(s, x);
-  splineY = interpolator.interpolate(s, y);
-  double startDistance = s[Math.min(start, s.length-1)];
-  double endDistance   = s[Math.max(0, s.length - end + 1)];
-  double interval = (endDistance - startDistance) / (steps - 1);
+  PolynomialSplineFunction splineX = interpolator.interpolate(s, x);
+  PolynomialSplineFunction splineY = interpolator.interpolate(s, y);
 
+  UnivariateFunction dX = splineX.derivative();
+  UnivariateFunction dY = splineY.derivative();
+
+  int i0 = Math.max(0, Math.min(start, s.length - 1));
+  int i1 = Math.max(0, Math.min(end,   s.length - 1));
+  if (i1 < i0) { int tmp = i0; i0 = i1; i1 = tmp; }
+
+  double startDistance = s[i0];
+  double endDistance   = s[i1];
+  double interval      = (endDistance - startDistance) / (steps - 1);
+
+  double[][][] Points = new double[3][steps][2];
+
+  // Draw OUTER
   stroke(0);
   strokeWeight(2);
   noFill();
   beginShape();
-
-  double[][] trackPoints = new double[steps][2];
   for (int j = 0; j < steps; j++) {
     double t = startDistance + j * interval;
-    double tx = splineX.value(t);
-    double ty = splineY.value(t);
-    vertex((float) tx, (float) ty);
-    trackPoints[j][0] = tx;
-    trackPoints[j][1] = ty;
-  }
-  vertex((float) trackPoints[0][0], (float) trackPoints[0][1]);
-  trackPoints[steps - 1][0] = trackPoints[0][0];
-  trackPoints[steps - 1][1] = trackPoints[0][1];
 
+    double cx = splineX.value(t);
+    double cy = splineY.value(t);
+
+    double tx = dX.value(t);
+    double ty = dY.value(t);
+
+    double nx = -ty;
+    double ny =  tx;
+    double len = Math.sqrt(nx*nx + ny*ny);
+    if (len == 0) len = 1;
+    nx /= len; ny /= len;
+
+    double ox = cx + offset * nx;
+    double oy = cy + offset * ny;
+
+    vertex((float)ox, (float)oy);
+    Points[0][j][0] = ox;
+    Points[0][j][1] = oy;
+  }
   endShape();
 
-  return trackPoints;
-}
+  // Draw CENTER
+  stroke(0);
+  strokeWeight(2);
+  noFill();
+  beginShape();
+  for (int j = 0; j < steps; j++) {
+    double t = startDistance + j * interval;
+    double cx = splineX.value(t);
+    double cy = splineY.value(t);
+    vertex((float)cx, (float)cy);
+    Points[1][j][0] = cx;
+    Points[1][j][1] = cy;
+  }
+  endShape();
 
+  // Draw INNER
+  stroke(0);
+  strokeWeight(2);
+  noFill();
+  beginShape();
+  for (int j = 0; j < steps; j++) {
+    double t = startDistance + j * interval;
+
+    double cx = splineX.value(t);
+    double cy = splineY.value(t);
+
+    double tx = dX.value(t);
+    double ty = dY.value(t);
+
+    double nx = -ty;
+    double ny =  tx;
+    double len = Math.sqrt(nx*nx + ny*ny);
+    if (len == 0) len = 1;
+    nx /= len; ny /= len;
+
+    double ix = cx - offset * nx;
+    double iy = cy - offset * ny;
+
+    vertex((float)ix, (float)iy);
+    Points[2][j][0] = ix;
+    Points[2][j][1] = iy;
+  }
+  endShape();
+
+  return Points;
+}
 
 void drawPoints(double x, double y, color c, double weight) {
   stroke(c);
