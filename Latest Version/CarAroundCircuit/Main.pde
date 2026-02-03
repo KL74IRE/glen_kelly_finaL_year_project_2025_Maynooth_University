@@ -14,6 +14,7 @@ void main(double [] x,double [] y,int start,int end, int steps,int mTrackLength,
 {
     double ratio = ratio(x,y,start,end,steps,mTrackLength);                             //Calls Method to retrieve ratio
     double [] [] trackPoints = drawTrack(x,y,start,end,steps);                          //Calls Method to retrieve track points
+    double [] [] [] Points = get2DPoints(trackPoints,steps);
     double [] [] radius = radius(trackPoints,steps,ratio);                              //Calls Method to retrieve radius of track points
     double [] [] speeds = maxSpeed(radius,steps);                                       //Calls Method to retrieve max speeds at track points
     double [] [] telemetry = carAroundTrack(speeds,ratio,steps);                        //Calls Method to move to next step and start a car simulation
