@@ -28,9 +28,10 @@ void setup() {                                                                  
   boolean brands = false;                                                           //If Brands Hatch should be initiated
   boolean bahrain = false;                                                          //If Bahrain should be initiated
   boolean circle = true;                                                           //If a basic circle should be initiated
+  boolean showTPs = true;
   
   if(edit){editingMode();}                                                          //If enabled enter editing mode
-  if(brands){brandsHatch(steps,excel,showWaypoints,showPoints,showSpeeds,telemetryS);}         //If enabled initiate Brands Hatch
-  if(circle){basicCircle(steps,excel,showWaypoints,showPoints,showSpeeds,telemetryS);}         //If enabled initiate a basic circle
-  if(bahrain){bahrain(steps,excel,showWaypoints,showPoints,showSpeeds, telemetryS);}            //If enabled initiate Bahrain
+  if(brands){brandsHatch(steps,excel,showWaypoints,showPoints,showSpeeds,telemetryS, showTPs);}         //If enabled initiate Brands Hatch
+  if(circle){basicCircle(steps,excel,showWaypoints,showPoints,showSpeeds,telemetryS, showTPs);}         //If enabled initiate a basic circle
+  if(bahrain){bahrain(steps,excel,showWaypoints,showPoints,showSpeeds, telemetryS, showTPs);}            //If enabled initiate Bahrain
 }

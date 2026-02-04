@@ -6,14 +6,14 @@ should grab the co-ordinates of the manually inputed waypoints,
 should posses the position of the waypoint at the start and end of the 2nd spline pass, in order to get a smooth 
 */
 
-void brandsHatch(int steps, boolean excel,boolean showWaypoints,boolean showPoints,boolean showSpeeds, boolean telemetryS)
+void brandsHatch(int steps, boolean excel,boolean showWaypoints,boolean showPoints,boolean showSpeeds, boolean telemetryS, boolean showTPs)
 {
     int mTrackLength = 1944;                                                                                //Brands Hatch Indy Circuit Length of 1944 meters
     double[] x = getXBrands();                                                                              //Retrieve x co-ordinates of Brands Hatch Indy Circuit
     double[] y = getYBrands();                                                                              //Retrieve y co-ordinates of Brands Hatch Indy Circuit
     int start = 24;                                                                                         //Start of 2nd Spline pass at point 33
     int end = 26;                                                                                           //End of 2nd Spine pass at point array.length - 35
-    main(x,y,start,end,steps,mTrackLength,showWaypoints,showPoints,showSpeeds,excel, telemetryS);                       //Call Main method in order to calculate splines, draw track and run tests
+    main(x,y,start,end,steps,mTrackLength,showWaypoints,showPoints,showSpeeds,excel, telemetryS, showTPs);                       //Call Main method in order to calculate splines, draw track and run tests
 }
 
 /*

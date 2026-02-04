@@ -6,14 +6,14 @@ should grab the co-ordinates of the manually inputed waypoints,
 should posses the position of the waypoint at the start and end of the 2nd spline pass, in order to get a smooth 
 */
 
-void bahrain(int steps, boolean excel,boolean showWaypoints,boolean showPoints,boolean showSpeeds,boolean telemetryS)
+void bahrain(int steps, boolean excel,boolean showWaypoints,boolean showPoints,boolean showSpeeds,boolean telemetryS, boolean showTPs)
 {
     int mTrackLength = 5412;                                                                                //Bahrain GP Circuit Length of 5412 meters
     double[] x = getXBahrain();                                                                             //Retrieve x co-ordinates of Bahrain GP Circuit
     double[] y = getYBahrain();                                                                             //Retrieve y co-ordinates of Bahrain GP Circuit
     int start = 34;                                                                                         //Start of 2nd Spline pass at point 33
     int end = 36;                                                                                           //End of 2nd Spine pass at point array.length - 35
-    main(x,y,start,end,steps,mTrackLength,showWaypoints,showPoints,showSpeeds,excel,telemetryS);                       //Call Main method in order to calculate splines, draw track and run tests
+    main(x,y,start,end,steps,mTrackLength,showWaypoints,showPoints,showSpeeds,excel,telemetryS, showTPs);                       //Call Main method in order to calculate splines, draw track and run tests
 }
 
 /*
