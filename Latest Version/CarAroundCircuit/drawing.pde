@@ -29,7 +29,7 @@ void drawTrack(double[] x, double[] y, int steps, double offset)
   if (steps < 2) steps = 2;
   double interval = (endDistance - startDistance) / (steps - 1);
 
-  stroke(0);
+  stroke(255, 0, 0);
   strokeWeight(2);
   noFill();
 
@@ -55,6 +55,8 @@ void drawTrack(double[] x, double[] y, int steps, double offset)
   }
   endShape();
 
+  stroke(0, 0, 255);
+
   beginShape();
   for (int j = 0; j < steps; j++)
   {
@@ -63,6 +65,8 @@ void drawTrack(double[] x, double[] y, int steps, double offset)
            (float)splineY.value(t));
   }
   endShape();
+  
+  stroke(255, 165, 0);
 
   beginShape();
   for (int j = 0; j < steps; j++)
@@ -85,6 +89,8 @@ void drawTrack(double[] x, double[] y, int steps, double offset)
            (float)(cy - offset * ny));
   }
   endShape();
+  
+  stroke(0);
 }
 
 void drawPoints(double x, double y, color c, double weight) {
