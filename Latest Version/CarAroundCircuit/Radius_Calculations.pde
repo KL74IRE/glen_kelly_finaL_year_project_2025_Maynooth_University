@@ -7,33 +7,34 @@ should be able to calculate the rest of the points within a loop
 should be able to convert all radius values to meters from pixels
 */
 
-double [] [] radius(double [] [] points, int steps, double ratio)
+double [] [] [] radius(double [] [] [] points, int steps, double ratio)
 {
-
-  double radius [] [] = new double [steps] [3];                                           //Set up 2D array to be able to hold x, y and radius
-
-  radius [0] [0] = (points [0] [0]);                                                      //Set x value
-  radius [0] [1] = (points [0] [1]);                                                      //Set y value
-  radius [0] [2] = getRadius(points [steps-2][0],  points [steps-2][1],                   //Get radius using 3 points (x1, y1, x2, y2, x3, y3)
-                              points [0]      [0],  points [0]      [1],
-                              points [1]      [0],  points [1]      [1]);
-  radius [0] [2] = (radius [0] [2] /ratio);                                               //Convert radius from pixels into meters
-                              
-  radius [steps-1] [0] = points [steps-1] [0];                                            //Set x value
-  radius [steps-1] [1] = points [steps-1] [1];                                            //Set y value
-  radius [steps-1] [2] = getRadius(points [steps-2][0],  points [steps-2][1],             //Get radius using 3 points (x1, y1, x2, y2, x3, y3)
-                                    points [steps-1][0],  points [steps-1][1],
-                                    points [1]      [0],  points [1]      [1]);
-  radius [steps-1] [2] = (radius [steps-2] [2] /ratio);
-   
-  for(int i = 1; i < (steps -1) ; i++)                                                    //Loop through remaining points
+  double radius [] [] []  = new double [3] [steps] [3];                                           //Set up 2D array to be able to hold x, y and radius
+  for(int i=0; i<3; i++)
   {
-    radius [i] [0] = points [i] [0];                                                        //Set x value
-    radius [i] [1] = points [i] [1];                                                        //Set y value
-    radius [i] [2] = getRadius(points [i-1][0],  points [i-1][1],                           //Get radius using 3 points (x1, y1, x2, y2, x3, y3)
-                               points [i]  [0],  points [i]  [1],
-                               points [i+1][0],  points [i+1][1]);
-    radius [i] [2] = (radius [i] [2] /ratio);                                               //Convert radius from pixels into meters
+  radius [i] [0] [0] = (points [i] [0] [0]);                                                      //Set x value
+  radius [i] [0] [1] = (points [i] [0] [1]);                                                      //Set y value
+  radius [i] [0] [2] = getRadius(points [i][steps-2][0],  points [i] [steps-2][1],                   //Get radius using 3 points (x1, y1, x2, y2, x3, y3)
+                              points [i][0]      [0],  points [i][0]      [1],
+                              points [i][1]      [0],  points [i][1]      [1]);
+  radius [i] [0] [2] = (radius [i] [0] [2] /ratio);                                               //Convert radius from pixels into meters
+                              
+  radius [i] [steps-1] [0] = points [i] [steps-1] [0];                                            //Set x value
+  radius [i] [steps-1] [1] = points [i] [steps-1] [1];                                            //Set y value
+  radius [i] [steps-1] [2] = getRadius(points [i] [steps-2][0],  points [i] [steps-2][1],             //Get radius using 3 points (x1, y1, x2, y2, x3, y3)
+                                    points [i] [steps-1][0],  points [i][steps-1][1],
+                                    points [i] [1]      [0],  points [i][1]      [1]);
+  radius [i] [steps-1] [2] = (radius [i] [steps-2] [2] /ratio);
+   
+  for(int j = 1; j < (steps -1) ; j++)                                                    //Loop through remaining points
+  {
+    radius [i][j] [0] = points [i][j] [0];                                                        //Set x value
+    radius [i][j] [1] = points [i][j] [1];                                                        //Set y value
+    radius [i][j] [2] = getRadius(points [i][j-1][0],  points [i][j-1][1],                           //Get radius using 3 points (x1, y1, x2, y2, x3, y3)
+                               points [i][j]  [0],  points [i][j]  [1],
+                               points [i][j+1][0],  points [i][j+1][1]);
+    radius [i][j] [2] = (radius [i][j] [2] /ratio);                                               //Convert radius from pixels into meters
+  }
   }
   
   return radius;                                                                          //return radius in meters
