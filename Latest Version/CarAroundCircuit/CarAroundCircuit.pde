@@ -22,11 +22,11 @@ boolean showWaypoints = false;
 boolean showPoints = false;
 boolean showSpeeds = false;
 boolean showTPs = false;
-boolean telemetryS = false;
+boolean telemetryS = true;
 
 boolean edit = false;
 boolean brands = false;
-boolean bahrain = true;
+boolean bahrain = false;
 boolean circle = false;
 
 Button[] buttons;
@@ -48,67 +48,81 @@ void setup() {
   buttons = new Button[] {
     new Button(bx, by, bw, bh, "Excel",
       () -> excel = !excel,
-      () -> excel
+      () -> excel,
+      false
     ),
     new Button(bx, by += bh + gap, bw, bh, "Waypoints",
       () -> showWaypoints = !showWaypoints,
-      () -> showWaypoints
+      () -> showWaypoints,
+      false
     ),
     new Button(bx, by += bh + gap, bw, bh, "Points",
       () -> showPoints = !showPoints,
-      () -> showPoints
+      () -> showPoints,
+      false
     ),
     new Button(bx, by += bh + gap, bw, bh, "Speeds",
       () -> showSpeeds = !showSpeeds,
-      () -> showSpeeds
+      () -> showSpeeds,
+      false
     ),
     new Button(bx, by += bh + gap, bw, bh, "TPs",
       () -> showTPs = !showTPs,
-      () -> showTPs
+      () -> showTPs,
+      false
     ),
     new Button(bx, by += bh + gap, bw, bh, "TelemetryS",
       () -> telemetryS = !telemetryS,
-      () -> telemetryS
+      () -> telemetryS,
+      false
     ),
 
     new Button(bx, by += bh + gap + 12, bw, bh, "Edit Mode",
       () -> { edit = true; brands = false; bahrain = false; circle = false; },
-      () -> edit
+      () -> edit,
+      false
     ),
     new Button(bx, by += bh + gap, bw, bh, "Brands",
       () -> { brands = true; edit = false; bahrain = false; circle = false; },
-      () -> brands
+      () -> brands,
+      false
     ),
     new Button(bx, by += bh + gap, bw, bh, "Bahrain",
       () -> { bahrain = true; edit = false; brands = false; circle = false; },
-      () -> bahrain
+      () -> bahrain,
+      false
     ),
     new Button(bx, by += bh + gap, bw, bh, "Circle",
       () -> { circle = true; edit = false; brands = false; bahrain = false; },
-      () -> circle
+      () -> circle,
+      false
     ),
-
     new Button(bx, by += bh + gap + 12, smallW, bh, "-100",
       () -> { steps = max(100, steps - 100); rebuildScene(); },
-      () -> true
+      () -> true,
+      true
     ),
     new Button(bx + smallW + gap, by, smallW, bh, "+100",
       () -> { steps += 100; rebuildScene(); },
-      () -> true
+      () -> true,
+      true
     ),
 
     new Button(bx, by += bh + gap, smallW, bh, "-1000",
       () -> { steps = max(100, steps - 1000); rebuildScene(); },
-      () -> true
+      () -> true,
+      true
     ),
     new Button(bx + smallW + gap, by, smallW, bh, "+1000",
       () -> { steps += 1000; rebuildScene(); },
-      () -> true
+      () -> true,
+      true
     ),
 
     new Button(bx, by += bh + gap + 12, bw, bh, "Rebuild",
       () -> rebuildScene(),
-      () -> true
+      () -> true,
+      true
     )
   };
 
@@ -149,18 +163,10 @@ void rebuildScene() {
 }
 
 void runScene() {
-  if (edit) {
-    editingMode();
-  }
-  if (brands) {
-    brandsHatch(steps, excel, showWaypoints, showPoints, showSpeeds, telemetryS, showTPs);
-  }
-  if (circle) {
-    basicCircle(steps, excel, showWaypoints, showPoints, showSpeeds, telemetryS, showTPs);
-  }
-  if (bahrain) {
-    bahrain(steps, excel, showWaypoints, showPoints, showSpeeds, telemetryS, showTPs);
-  }
+  if (edit) editingMode();
+  if (brands) brandsHatch(steps, excel, showWaypoints, showPoints, showSpeeds, telemetryS, showTPs);
+  if (circle) basicCircle(steps, excel, showWaypoints, showPoints, showSpeeds, telemetryS, showTPs);
+  if (bahrain) bahrain(steps, excel, showWaypoints, showPoints, showSpeeds, telemetryS, showTPs);
 }
 
 class Button {
@@ -168,8 +174,11 @@ class Button {
   String label;
   Runnable onClick;
   BoolSupplier state;
+  boolean isAction;
 
-  Button(float x, float y, float w, float h, String label, Runnable onClick, BoolSupplier state) {
+  Button(float x, float y, float w, float h,
+         String label, Runnable onClick,
+         BoolSupplier state, boolean isAction) {
     this.x = x;
     this.y = y;
     this.w = w;
@@ -177,18 +186,22 @@ class Button {
     this.label = label;
     this.onClick = onClick;
     this.state = state;
+    this.isAction = isAction;
   }
 
   void draw() {
     boolean over = hit(mouseX, mouseY);
-    boolean on = state.get();
 
     stroke(0);
-    if (on) {
-      fill(over ? color(0, 180, 0) : color(0, 220, 0));
+
+    if (isAction) {
+      fill(over ? color(180) : color(210));
     } else {
-      fill(over ? color(180, 0, 0) : color(220, 0, 0));
+      boolean on = state.get();
+      if (on) fill(over ? color(0, 180, 0) : color(0, 220, 0));
+      else    fill(over ? color(180, 0, 0) : color(220, 0, 0));
     }
+
     rect(x, y, w, h, 6);
 
     fill(255);
