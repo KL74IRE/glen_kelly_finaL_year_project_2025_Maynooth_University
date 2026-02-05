@@ -86,7 +86,7 @@ double getOptimalLap(double[][][] telemetry, double[][][] speeds, int steps, dou
     optimalj[i - 1] = parent[optimalj[i]][i];
   }
   stroke(0, 255, 0);
-  strokeWeight(6);
+  strokeWeight(10);
 
   for (int i = 1; i < steps; i++) {
     int jPrev = optimalj[i - 1];
