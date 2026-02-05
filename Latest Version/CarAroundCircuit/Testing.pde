@@ -88,4 +88,3 @@ void checkRadius()
      System.out.println("Test: checkPoints has failed!");
   }
 }
-}

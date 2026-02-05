@@ -23,7 +23,6 @@ double ratio(double [] x, double [] y, int start, int end, int steps, double mTr
     prevX = tx;
     prevY = ty;
     }
-  //println(totalLength + " " + mTrackLength);
   double ratio = totalLength/mTrackLength;
   return(ratio);
 

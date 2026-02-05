@@ -11,7 +11,7 @@ double[][] lapTime(double[][][] telemetry, double[][][] speeds, int steps, doubl
 
             double s = Math.sqrt(dx*dx + dy*dy) / ratio;
 
-            double v = telemetry[j][i][2]; // ✅ FIXED
+            double v = telemetry[j][i][2];
 
             if (v > 1e-9) totalTime += s / v;
         }
@@ -42,79 +42,67 @@ double getOptimalLap(double[][][] telemetry, double[][][] speeds, int steps, dou
 {
   final double INF = Double.POSITIVE_INFINITY;
 
-  // dp[lane][i] = best (minimum) time to reach step i while being in `lane`
   double[][] dp = new double[3][steps];
 
-  // parent[lane][i] = lane at step i-1 that led to best dp[lane][i]
   int[][] parent = new int[3][steps];
 
-  // ---- init ----
-  for (int lane = 0; lane < 3; lane++) {
-    dp[lane][0] = 0.0;
-    parent[lane][0] = lane;
+  for (int j = 0; j < 3; j++) {
+    dp[j][0] = 0.0;
+    parent[j][0] = j;
   }
 
-  // ---- fill DP ----
   for (int i = 1; i < steps; i++) {
-    for (int lane = 0; lane < 3; lane++) {
+    for (int j = 0; j < 3; j++) {
 
-      // pick best previous lane (stay / switch to adjacent)
-      double bestPrev = dp[lane][i - 1];
-      int bestLane = lane;
+      double bestPrev = dp[j][i - 1];
+      int bestlane = j;
 
-      if (lane > 0 && dp[lane - 1][i - 1] < bestPrev) {
-        bestPrev = dp[lane - 1][i - 1];
-        bestLane = lane - 1;
+      if (j > 0 && dp[j - 1][i - 1] < bestPrev) {
+        bestPrev = dp[j - 1][i - 1];
+        bestlane = j - 1;
       }
-      if (lane < 2 && dp[lane + 1][i - 1] < bestPrev) {
-        bestPrev = dp[lane + 1][i - 1];
-        bestLane = lane + 1;
+      if (j < 2 && dp[j + 1][i - 1] < bestPrev) {
+        bestPrev = dp[j + 1][i - 1];
+        bestlane = j + 1;
       }
 
-      // step cost if we end up in `lane` at step i
-      double dx = speeds[lane][i][0] - speeds[lane][i - 1][0];
-      double dy = speeds[lane][i][1] - speeds[lane][i - 1][1];
+      double dx = speeds[j][i][0] - speeds[j][i - 1][0];
+      double dy = speeds[j][i][1] - speeds[j][i - 1][1];
       double s  = Math.sqrt(dx * dx + dy * dy) / ratio;
 
-      double v  = telemetry[lane][i][2];
+      double v  = telemetry[j][i][2];
       double dt = (v > 1e-9) ? (s / v) : INF;
 
-      parent[lane][i] = bestLane;
-      dp[lane][i] = bestPrev + dt;
+      parent[j][i] = bestlane;
+      dp[j][i] = bestPrev + dt;
     }
   }
 
-  // ---- choose best finishing lane ----
-  int endLane = 0;
-  if (dp[1][steps - 1] < dp[endLane][steps - 1]) endLane = 1;
-  if (dp[2][steps - 1] < dp[endLane][steps - 1]) endLane = 2;
+  int endlane = 0;
+  if (dp[1][steps - 1] < dp[endlane][steps - 1]) endlane = 1;
+  if (dp[2][steps - 1] < dp[endlane][steps - 1]) endlane = 2;
 
-  double bestTime = dp[endLane][steps - 1];
+  double bestTime = dp[endlane][steps - 1];
 
-  // ---- backtrack optimal lane choice per step ----
-  int[] optimalLane = new int[steps];
-  optimalLane[steps - 1] = endLane;
+  int[] optimalj = new int[steps];
+  optimalj[steps - 1] = endlane;
   for (int i = steps - 1; i > 0; i--) {
-    optimalLane[i - 1] = parent[optimalLane[i]][i];
+    optimalj[i - 1] = parent[optimalj[i]][i];
   }
-
-  // ---- draw chosen path bright green using line segments ----
-  stroke(0, 255, 0);     // bright green
+  stroke(0, 255, 0);
   strokeWeight(6);
 
   for (int i = 1; i < steps; i++) {
-    int lanePrev = optimalLane[i - 1];
-    int laneCurr = optimalLane[i];
+    int jPrev = optimalj[i - 1];
+    int jCurr = optimalj[i];
 
-    float xPrev = (float) speeds[lanePrev][i - 1][0];
-    float yPrev = (float) speeds[lanePrev][i - 1][1];
-    float xCurr = (float) speeds[laneCurr][i][0];
-    float yCurr = (float) speeds[laneCurr][i][1];
+    float xPrev = (float) speeds[jPrev][i - 1][0];
+    float yPrev = (float) speeds[jPrev][i - 1][1];
+    float xCurr = (float) speeds[jCurr][i][0];
+    float yCurr = (float) speeds[jCurr][i][1];
 
     line(xPrev, yPrev, xCurr, yCurr);
   }
-
-  // reset style (optional)
   stroke(0);
   strokeWeight(2);
 
