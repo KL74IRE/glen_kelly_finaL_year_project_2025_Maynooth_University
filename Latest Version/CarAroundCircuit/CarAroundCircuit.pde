@@ -26,7 +26,7 @@ boolean telemetryS = false;
 
 boolean edit = false;
 boolean brands = false;
-boolean bahrain = false;
+boolean bahrain = true;
 boolean circle = false;
 
 Button[] buttons;
@@ -43,19 +43,73 @@ void setup() {
   float bw = 170;
   float bh = 36;
   float gap = 8;
+  float smallW = (bw - gap) / 2;
 
   buttons = new Button[] {
-    new Button(bx, by, bw, bh, "Excel", () -> excel = !excel, () -> excel),
-    new Button(bx, by += bh + gap, bw, bh, "Waypoints", () -> showWaypoints = !showWaypoints, () -> showWaypoints),
-    new Button(bx, by += bh + gap, bw, bh, "Points", () -> showPoints = !showPoints, () -> showPoints),
-    new Button(bx, by += bh + gap, bw, bh, "Speeds", () -> showSpeeds = !showSpeeds, () -> showSpeeds),
-    new Button(bx, by += bh + gap, bw, bh, "TPs", () -> showTPs = !showTPs, () -> showTPs),
-    new Button(bx, by += bh + gap, bw, bh, "TelemetryS", () -> telemetryS = !telemetryS, () -> telemetryS),
-    new Button(bx, by += bh + gap + 12, bw, bh, "Edit Mode", () -> { edit = true; brands = false; bahrain = false; circle = false; }, () -> edit),
-    new Button(bx, by += bh + gap, bw, bh, "Brands", () -> { brands = true; edit = false; bahrain = false; circle = false; }, () -> brands),
-    new Button(bx, by += bh + gap, bw, bh, "Bahrain", () -> { bahrain = true; edit = false; brands = false; circle = false; }, () -> bahrain),
-    new Button(bx, by += bh + gap, bw, bh, "Circle", () -> { circle = true; edit = false; brands = false; bahrain = false; }, () -> circle),
-    new Button(bx, by += bh + gap + 12, bw, bh, "Rebuild", () -> rebuildScene(), () -> true)
+    new Button(bx, by, bw, bh, "Excel",
+      () -> excel = !excel,
+      () -> excel
+    ),
+    new Button(bx, by += bh + gap, bw, bh, "Waypoints",
+      () -> showWaypoints = !showWaypoints,
+      () -> showWaypoints
+    ),
+    new Button(bx, by += bh + gap, bw, bh, "Points",
+      () -> showPoints = !showPoints,
+      () -> showPoints
+    ),
+    new Button(bx, by += bh + gap, bw, bh, "Speeds",
+      () -> showSpeeds = !showSpeeds,
+      () -> showSpeeds
+    ),
+    new Button(bx, by += bh + gap, bw, bh, "TPs",
+      () -> showTPs = !showTPs,
+      () -> showTPs
+    ),
+    new Button(bx, by += bh + gap, bw, bh, "TelemetryS",
+      () -> telemetryS = !telemetryS,
+      () -> telemetryS
+    ),
+
+    new Button(bx, by += bh + gap + 12, bw, bh, "Edit Mode",
+      () -> { edit = true; brands = false; bahrain = false; circle = false; },
+      () -> edit
+    ),
+    new Button(bx, by += bh + gap, bw, bh, "Brands",
+      () -> { brands = true; edit = false; bahrain = false; circle = false; },
+      () -> brands
+    ),
+    new Button(bx, by += bh + gap, bw, bh, "Bahrain",
+      () -> { bahrain = true; edit = false; brands = false; circle = false; },
+      () -> bahrain
+    ),
+    new Button(bx, by += bh + gap, bw, bh, "Circle",
+      () -> { circle = true; edit = false; brands = false; bahrain = false; },
+      () -> circle
+    ),
+
+    new Button(bx, by += bh + gap + 12, smallW, bh, "-100",
+      () -> { steps = max(100, steps - 100); rebuildScene(); },
+      () -> true
+    ),
+    new Button(bx + smallW + gap, by, smallW, bh, "+100",
+      () -> { steps += 100; rebuildScene(); },
+      () -> true
+    ),
+
+    new Button(bx, by += bh + gap, smallW, bh, "-1000",
+      () -> { steps = max(100, steps - 1000); rebuildScene(); },
+      () -> true
+    ),
+    new Button(bx + smallW + gap, by, smallW, bh, "+1000",
+      () -> { steps += 1000; rebuildScene(); },
+      () -> true
+    ),
+
+    new Button(bx, by += bh + gap + 12, bw, bh, "Rebuild",
+      () -> rebuildScene(),
+      () -> true
+    )
   };
 
   rebuildScene();
@@ -68,9 +122,15 @@ void draw() {
 void drawUI() {
   noStroke();
   fill(255, 230);
-  rect(width - 220, 20, 210, 520, 12);
+  rect(width - 220, 20, 210, 700, 12);
 
   for (Button b : buttons) b.draw();
+
+  fill(0);
+  textSize(14);
+  textAlign(CENTER);
+  text("Steps: " + steps, width - 115, 730);
+  textAlign(LEFT);
 }
 
 void mousePressed() {
