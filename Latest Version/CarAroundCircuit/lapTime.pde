@@ -19,8 +19,6 @@ double[][] lapTime(double[][][] telemetry, double[][][] speeds, int steps, doubl
         int minutes = (int)(totalTime / 60.0);
         double seconds = totalTime - minutes * 60.0;
 
-        System.out.printf("Car %d Lap Time = %02d:%06.3f\n", j, minutes, seconds);
-
         times[j][0] = minutes;
         times[j][1] = seconds;
     }
@@ -29,8 +27,6 @@ double[][] lapTime(double[][][] telemetry, double[][][] speeds, int steps, doubl
 
     int bestMin = (int)(bestTime / 60.0);
     double bestSec = bestTime - bestMin * 60.0;
-
-    System.out.printf("Optimal Lap Time = %02d:%06.3f\n", bestMin, bestSec);
 
     times[3][0] = bestMin;
     times[3][1] = bestSec;
