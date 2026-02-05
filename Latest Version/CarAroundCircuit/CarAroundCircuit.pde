@@ -22,7 +22,7 @@ boolean showWaypoints = false;
 boolean showPoints = false;
 boolean showSpeeds = false;
 boolean showTPs = false;
-boolean telemetryS = true;
+boolean telemetryS = false;
 
 boolean edit = false;
 boolean brands = false;
