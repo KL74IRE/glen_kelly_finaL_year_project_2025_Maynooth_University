@@ -10,9 +10,9 @@ should check that the radius method works as intended
 
 void tests(double [] [] trackPoints,double [] [] speeds, double [] [] radius, double steps)
 {
-  System.out.println("Tests running at: " + LocalTime.now());                                 //Prints Local Time
-  checkPoints(trackPoints,speeds,radius,steps);                                               //Checks points throughout calculations to ensure all match
-  checkRadius();                                                                              //Checks radius method works successfully
+  System.out.println("Tests running at: " + LocalTime.now());
+  checkPoints(trackPoints,speeds,radius,steps);
+  checkRadius();
   System.out.println("   ");
 }
 
@@ -30,41 +30,37 @@ else Success message
 
 void checkPoints(double [] [] trackPoints,double [] [] speeds, double [] [] radius, double steps)
 {
-   boolean flag = false;                                                                    //Error Flag
-   int point = 0;                                                                           //Point of error
-   for(int i = 0; i< steps; i++)                                                            //All points
-   { 
-      if(trackPoints [i][0] == speeds [i][0] && trackPoints [i][1] == speeds [i][1])        //compare speeds to track Points
+  boolean flag = false;
+  int point = 0;
+  for(int i = 0; i< steps; i++)
+  { 
+    if(trackPoints [i][0] == speeds [i][0] && trackPoints [i][1] == speeds [i][1])
+    {
+      if(trackPoints [i][0] == speeds [i][0] && trackPoints [i][1] == radius [i][1])
       {
-        if(trackPoints [i][0] == speeds [i][0] && trackPoints [i][1] == radius [i][1])      //compare track points to radius
-        {
-                                                                                            //All Match - No Action
-        }
-        else
-        {
-          flag = true;                                                                      //Discrepency found, Flag
-          point = i;                                                                        //Mark point of discrepency
-        }
       }
       else
       {
-        flag = true;                                                                        //Discrepency found, Flag
-        point = i;                                                                          //Mark point of discrepency
+       flag = true;
+       point = i;
       }
-   }
-   if(flag)                                                                                 //If Flag
-   {
-     System.out.println("Test: checkPoints has failed at point: " + point);                 //Error Messages
-     System.out.println("     x: Track Points: " + trackPoints [point][0] + ", Radius: " + radius [point][0] + ", Speeds: " + speeds [point][0]);
-     System.out.println("     y: Track Points: " + trackPoints [point][1] + ", Radius: " + radius [point][1] + ", Speeds: " + speeds [point][1]);
-   }
-   else                                                                                     //else
-   {                                                                                        //Pass Messages
-     //for( int i = 0; i< steps; i++){
-     //System.out.println("     x: Track Points: " + trackPoints [i][0] + ", Radius: " + radius [i][0] + ", Speeds: " + speeds [i][0]);
-     //System.out.println("     y: Track Points: " + trackPoints [i][1] + ", Radius: " + radius [i][1] + ", Speeds: " + speeds [i][1]);}
-     System.out.println("Test: checkPoints has passed!");
-   }
+    }
+    else
+    {
+      flag = true;
+      point = i;
+    }
+  }
+  if(flag)
+  {
+    System.out.println("Test: checkPoints has failed at point: " + point);
+    System.out.println("     x: Track Points: " + trackPoints [point][0] + ", Radius: " + radius [point][0] + ", Speeds: " + speeds [point][0]);
+    System.out.println("     y: Track Points: " + trackPoints [point][1] + ", Radius: " + radius [point][1] + ", Speeds: " + speeds [point][1]);
+  }
+  else
+  {
+    System.out.println("Test: checkPoints has passed!");
+  }
 }
 
 /*
@@ -75,24 +71,21 @@ should pass them to the calculation method and retrieve a radius,
 should check the radius against expected result,
 should output either pass or fail messages
 */
-
 void checkRadius()
 {
-  double x1 = 0, y1 = 1;                                      //x1 , y1
-  double x2 = 1, y2 = 0;                                      //x2 , y2
-  double x3 = -1,y3 = 0;                                      //x3 , y3
+  double x1 = 0, y1 = 1;
+  double x2 = 1, y2 = 0;
+  double x3 = -1, y3 = 0;
 
-  double radius = getRadius(x1,y1,x2,y2,x3,y3);               // Send all 3 pointst to getRadius()
+  double radius = getRadius(x1, y1, x2, y2, x3, y3);
   
-  if(radius == 1)                                             //If expected radius is returned
+  if(radius == 1)
   {
-     System.out.println("Test: checkRadius has passed!");       //Success Message
-     System.out.println("   ");
+     System.out.println("Test: checkRadius has passed!");
   }
-  
-  else                                                        //Else
+  else
   {
-     System.out.println("Test: checkPoints has failed!");       //Fail Message
-     System.out.println("   ");
+     System.out.println("Test: checkPoints has failed!");
   }
+}
 }

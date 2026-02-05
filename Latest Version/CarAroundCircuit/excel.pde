@@ -14,7 +14,7 @@ import org.apache.poi.xddf.usermodel.chart.ChartTypes;
 import org.apache.poi.xddf.usermodel.chart.ScatterStyle;
 import org.apache.poi.xddf.usermodel.chart.XDDFDataSourcesFactory;
 
-void saveSpeedsToExcel(double[][] radius, int steps, double[] tyres, double[][] telemetry) {
+void saveSpeedsToExcel(double[][][] radius, int steps, double[] tyres, double[][][] telemetry) {
   try {
     XSSFWorkbook workbook = new XSSFWorkbook();
     XSSFSheet sheet = workbook.createSheet("Telemetry");
@@ -29,11 +29,11 @@ void saveSpeedsToExcel(double[][] radius, int steps, double[] tyres, double[][] 
 
     // Data
     for (int i = 0; i < steps; i++) {
-      double r = radius[i][2];
+      double r = radius[3][i][2];
       double soft = Math.sqrt(tyres[0] * 9.81 * r);
       double medium = Math.sqrt(tyres[1] * 9.81 * r);
       double hard = Math.sqrt(tyres[2] * 9.81 * r);
-      double carVelocity = telemetry[i][2];
+      double carVelocity = telemetry[4][i][2];
 
       Row row = sheet.createRow(i + 1);
       row.createCell(0).setCellValue(i);
