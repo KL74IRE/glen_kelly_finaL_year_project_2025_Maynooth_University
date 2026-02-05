@@ -101,143 +101,136 @@ void drawPoints(double x, double y, color c, double weight) {
   strokeWeight(2);
 }
 
-void visualisation(double [] x, double [] y, double [][] speeds, double [] [] telemetry, int steps, boolean waypoints, boolean points, boolean speed, boolean telemetryS, double [] lapTime)
-{
-  
-  if(waypoints)
-  {
-    for(int i = 0; i < x.length; i++)
-    {
-      drawPoints(x[i],y[i], #9D00FF, 25);
+void visualisationAllLanes(
+  double[] x, double[] y,
+  double[][][] speeds,
+  double[][][] telemetry,
+  int steps,
+  boolean waypoints,
+  boolean points,
+  boolean speedLabels,
+  boolean telemetryLabels,
+  double[][] lapTime
+){
+  if (waypoints) drawWaypoints(x, y);
+
+  if (points) drawPointIndices(speeds[1], steps);
+
+  drawLane(speeds[0], telemetry[0], steps, speedLabels, telemetryLabels, #FF0000, #7A00FF);
+  drawLane(speeds[1], telemetry[1], steps, speedLabels, telemetryLabels, #0066FF, #4B0082);
+  drawLane(speeds[2], telemetry[2], steps, speedLabels, telemetryLabels, #FF8800, #4B0082);
+
+  drawLapTimesHUD(lapTime);
+}
+
+void drawWaypoints(double[] x, double[] y) {
+  for (int i = 0; i < x.length; i++) drawPoints(x[i], y[i], #9D00FF, 25);
+}
+
+double slopeBetween(double[][] pts, int i, int steps) {
+  int next = (i < steps - 1) ? (i + 1) : 0;
+  double dx = pts[next][0] - pts[i][0];
+  double dy = pts[next][1] - pts[i][1];
+  if (Math.abs(dx) < 1e-9) return (dy >= 0) ? 1e9 : -1e9;
+  return dy / dx;
+}
+
+void drawLabelAtPoint(
+  double x, double y,
+  int i,
+  double slope,
+  String label,
+  float dxEven, float dxOdd,
+  float dyNormalEven, float dyNormalOdd,
+  float dyFirst
+){
+  if (slope > 1 || slope < -1) {
+    if (i % 2 == 0) text(label, (float)x + dxEven, (float)y);
+    else            text(label, (float)x + dxOdd,  (float)y);
+    return;
+  }
+  if (i == 0) {
+    text(label, (float)x, (float)y + dyFirst);
+    return;
+  }
+  if (i % 2 == 0) text(label, (float)x, (float)y + dyNormalEven);
+  else            text(label, (float)x, (float)y + dyNormalOdd);
+}
+
+void drawPointIndices(double[][] speedsLane, int steps) {
+  for (int i = 0; i < steps; i++) {
+    fill(#FF0000);
+    double slope = slopeBetween(speedsLane, i, steps);
+    String label = "" + i;
+
+    drawLabelAtPoint(
+      speedsLane[i][0], speedsLane[i][1],
+      i, slope, label,
+      15, -15,
+      16.5, -16.5,
+      -10
+    );
+
+    drawPoints(speedsLane[i][0], speedsLane[i][1], #FF0000, 5);
+  }
+}
+
+void drawLane(
+  double[][] speedsLane, double[][] telemetryLane,
+  int steps,
+  boolean speedLabels, boolean telemetryLabels,
+  int laneColour, int telemetryTextColour
+){
+  for (int i = 0; i < steps; i++) {
+    drawPoints(speedsLane[i][0], speedsLane[i][1], laneColour, 5);
+  }
+
+  if (speedLabels) {
+    textSize(8);
+    for (int i = 0; i < steps; i++) {
+      fill(laneColour);
+      double slope = slopeBetween(speedsLane, i, steps);
+      String label = nf((float)speedsLane[i][2], 3, 1);
+
+      drawLabelAtPoint(
+        speedsLane[i][0], speedsLane[i][1],
+        i, slope, label,
+        15, -65,
+        16.5, -16.5,
+        -5
+      );
     }
   }
-  
-  if(points)
-  {
-    for(int i = 0; i < steps; i++)
-    {
-      fill(#FF0000);
-      double slope = 0;
-      if(i<steps-1)
-      {
-        slope = (speeds [i+1][1]-speeds [i][1])/(speeds [i+1][0]-speeds [i][0]);
-      }
-      else
-      {
-        slope = (speeds [0][1]-speeds [i][1])/(speeds [0][0]-speeds [i][0]);
-      }
-      if(slope > 1 || slope < -1)
-      {
-        if(i % 2 == 0)
-        {
-        text(i, (float)speeds [i][0] +15, (float) speeds [i][1]);
-        }
-        else
-        {
-        text(i, (float)speeds [i][0] -15, (float) speeds [i][1]);
-        }
-      }
-      else if(i==0)
-      {
-        text(i, (float)speeds [i][0], (float) speeds [i][1]-10);
-      }
-      else
-      {
-        if(i % 2 == 0)
-        {
-        text(i, (float)speeds [i][0], (float) speeds [i][1] +16.5);
-        }
-        else
-        {
-        text(i, (float)speeds [i][0], (float) speeds [i][1] -16.5);
-        }
-      }
-      drawPoints(speeds [i][0] , speeds [i][1], #FF0000, 5);
+
+  if (telemetryLabels) {
+    textSize(8);
+    for (int i = 0; i < steps; i++) {
+      fill(telemetryTextColour);
+      double slope = slopeBetween(telemetryLane, i, steps);
+      String label = nf((float)telemetryLane[i][2], 3, 1);
+
+      drawLabelAtPoint(
+        telemetryLane[i][0], telemetryLane[i][1],
+        i, slope, label,
+        35, -85,
+        36.5, -36.5,
+        -25
+      );
     }
   }
-   textSize(8); 
-  if(speed)
-  {
-    for(int i = 0; i < steps; i++)
-    {
-      fill(#FF0000);
-      double slope = 0;
-      if(i<steps-1)
-      {
-        slope = (speeds [i+1][1]-speeds [i][1])/(speeds [i+1][0]-speeds [i][0]);
-      }
-      else
-      {
-        slope = (speeds [0][1]-speeds [i][1])/(speeds [0][0]-speeds [i][0]);
-      }
-      if(slope > 1 || slope < -1)
-      {
-        if(i % 2 == 0){
-        text(nf((float)speeds[i][2],3,1), (float)speeds [i][0] +15, (float) speeds [i][1]);
-        }
-        else
-        {
-        text(nf((float)speeds[i][2],3,1), (float)speeds [i][0] -65, (float) speeds [i][1]);
-        }
-      }
-      else if(i==0)
-      {
-        text(nf((float)speeds[i][2],3,1), (float)speeds [i][0], (float) speeds [i][1]-5);
-      }
-      else
-      {
-        if(i % 2 == 0){
-        text(nf((float)speeds[i][2],3,1), (float)speeds [i][0], (float) speeds [i][1] + 16.5);
-        }else{
-        text(nf((float)speeds[i][2],3,1), (float)speeds [i][0], (float) speeds [i][1] - 16.5);
-        }
-      }
-      drawPoints(speeds [i][0] , speeds [i][1], #FF0000, 5);
-    }
-  }
-  
-  if(telemetryS)
-  {
-    for(int i = 0; i < steps; i++)
-    {
-      fill(#4B0082);
-      double slope = 0;
-      if(i<steps-1)
-      {
-        slope = (telemetry [i+1][1]-telemetry [i][1])/(telemetry [i+1][0]-telemetry [i][0]);
-      }
-      else
-      {
-        slope = (telemetry [0][1]-telemetry [i][1])/(telemetry [0][0]-telemetry [i][0]);
-      }
-      if(slope > 1 || slope < -1)
-      {
-        if(i % 2 == 0){
-        text(nf((float)telemetry[i][2],3,1), (float)telemetry [i][0] +35, (float) telemetry [i][1]);
-        }
-        else
-        {
-        text(nf((float)telemetry[i][2],3,1), (float)telemetry [i][0] -85, (float) telemetry [i][1]);
-        }
-      }
-      else if(i==0)
-      {
-        text(nf((float)telemetry[i][2],3,1), (float)telemetry [i][0], (float) telemetry [i][1]-25);
-      }
-      else
-      {
-        if(i % 2 == 0){
-        text(nf((float)telemetry[i][2],3,1), (float)telemetry [i][0], (float) telemetry [i][1] + 36.5);
-        }else{
-        text(nf((float)telemetry[i][2],3,1), (float)telemetry [i][0], (float) telemetry [i][1] - 36.5);
-        }
-      }
-      drawPoints(telemetry [i][0] , telemetry [i][1], #FF0000, 5);
-    }
-  }
-  
-  textSize(20); 
-  fill(#FF0000);
-  String lap = String.format("%.0f:%05.2f", lapTime[0], lapTime[1]);
-  text(lap, (float)50, (float)50);
+}
+
+void drawLapTimesHUD(double[][] lapTime) {
+  textSize(16);
+  fill(#FFFFFF);
+
+  String t0 = String.format("Lane 0: %.0f:%05.2f", lapTime[0][0], lapTime[0][1]);
+  String t1 = String.format("Lane 1: %.0f:%05.2f", lapTime[1][0], lapTime[1][1]);
+  String t2 = String.format("Lane 2: %.0f:%05.2f", lapTime[2][0], lapTime[2][1]);
+  String to = String.format("Optimal: %.0f:%05.2f", lapTime[3][0], lapTime[3][1]);
+
+  text(t0, 50, 50);
+  text(t1, 50, 70);
+  text(t2, 50, 90);
+  text(to, 50, 110);
 }

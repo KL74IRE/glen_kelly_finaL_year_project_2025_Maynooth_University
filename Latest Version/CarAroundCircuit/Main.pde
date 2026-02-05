@@ -21,8 +21,6 @@ void main(double [] x,double [] y,int start,int end, int steps,int mTrackLength,
     double [] []  lapTime = lapTime(telemetry, speeds, steps ,ratio);
     drawLapTimes(lapTime);
     drawTrack(x, y, 800, 10.0);
-    //visualisation(x, y, speeds, telemetry, steps, showWaypoints, showPoints, showSpeeds, telemetryS, lapTime);
+    visualisationAllLanes(x, y, speeds, telemetry, steps, showWaypoints, showPoints, showSpeeds, telemetryS, lapTime);
     if(excel){saveSpeedsToExcel(radius,steps,getTyres(),telemetry);}
-    //tests(trackPoints,speeds,radius,steps);
-    
 }

@@ -23,12 +23,13 @@ void setup() {
   boolean showWaypoints = false;
   boolean showPoints = false;
   boolean showSpeeds = false;
-  boolean telemetryS = false;
+  boolean showTPs = false;
+  boolean telemetryS = true;
   boolean edit = false;
   boolean brands = false;
   boolean bahrain = true;
   boolean circle = false;
-  boolean showTPs = true;
+  
   
   if(edit){editingMode();}
   if(brands){brandsHatch(steps,excel,showWaypoints,showPoints,showSpeeds,telemetryS, showTPs);}
