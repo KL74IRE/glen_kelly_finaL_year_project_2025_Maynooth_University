@@ -2,6 +2,7 @@ double[][][] get2DPoints(double[][] trackPoints, int steps, boolean trackLines)
 {
   double[][][] Points = new double[3][steps][2];
 
+  // center line points
   for (int i = 0; i < steps; i++)
   {
     Points[1][i][0] = trackPoints[i][0];
@@ -48,6 +49,15 @@ double[][][] get2DPoints(double[][] trackPoints, int steps, boolean trackLines)
 
     Points[2][i][0] = xA - offset * nx;
     Points[2][i][1] = yA - offset * ny;
+    int iNext2 = (i == steps - 1) ? steps - 1 : i + 1;
+
+    double x1 = Points[0][i][0];
+    double y1 = Points[0][i][1];
+    double x2 = Points[0][iNext2][0];
+    double y2 = Points[0][iNext2][1];
+
+    double dxLine = x2 - x1;
+    double dyLine = y2 - y1;
 
     if(trackLines)
     {

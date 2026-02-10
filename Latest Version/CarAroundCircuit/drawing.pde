@@ -227,10 +227,10 @@ void drawLapTimesHUD(double[][] lapTime) {
   String t0 = String.format("Lane 0: %.0f:%05.2f", lapTime[0][0], lapTime[0][1]);
   String t1 = String.format("Lane 1: %.0f:%05.2f", lapTime[1][0], lapTime[1][1]);
   String t2 = String.format("Lane 2: %.0f:%05.2f", lapTime[2][0], lapTime[2][1]);
-  String to = String.format("Optimal: %.0f:%05.2f", lapTime[3][0], lapTime[3][1]);
+  String t3 = String.format("Optimal: %.0f:%05.2f", lapTime[3][0], lapTime[3][1]);
 
   text(t0, 50, 50);
   text(t1, 50, 70);
   text(t2, 50, 90);
-  text(to, 50, 110);
+  text(t3, 50, 110);
 }

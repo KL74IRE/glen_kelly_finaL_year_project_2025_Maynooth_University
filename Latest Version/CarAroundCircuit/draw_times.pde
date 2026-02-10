@@ -1,4 +1,5 @@
-void drawLapTimes(double[][] times) {
+void drawLapTimes(double[][] times, double geneticBest)
+{
   textSize(16);
   textAlign(LEFT, TOP);
 
@@ -6,26 +7,32 @@ void drawLapTimes(double[][] times) {
   float y = 20;
   float lineH = 20;
 
-  for (int j = 0; j < times.length; j++) {
+  // ---- draw lane / optimal times ----
+  for (int j = 0; j < times.length; j++)
+  {
     int minutes = (int) times[j][0];
     double seconds = times[j][1];
 
-    // Set colour
-    if (j == 3) {
-      fill(0, 255, 0);
-    } else if (j==2){
-      fill(255, 165, 0);         
-    } else if (j==1){
-      fill(0, 0, 255);           
-    } else if (j==0){
-      fill(255, 0, 0);           
-    } else{
-      fill(0);
-    }
+    if (j == 3)      fill(0, 255, 0);     // optimal
+    else if (j == 2) fill(255, 165, 0);   // lane 2
+    else if (j == 1) fill(0, 0, 255);     // lane 1
+    else if (j == 0) fill(255, 0, 0);     // lane 0
+    else             fill(0);
 
     String label = (j < 3) ? "Lane " + j : "Optimal";
     String s = String.format("%s: %02d:%06.3f", label, minutes, seconds);
-
     text(s, x, y + j * lineH);
+  }
+
+  // ---- draw genetic best lap ----
+  if (geneticBest > 0 && !Double.isInfinite(geneticBest))
+  {
+    int gMin = (int)(geneticBest / 60.0);
+    double gSec = geneticBest - gMin * 60.0;
+
+    fill(128, 0, 128); // purple
+
+    String g = String.format("Genetic: %02d:%06.3f", gMin, gSec);
+    text(g, x, y + times.length * lineH);
   }
 }

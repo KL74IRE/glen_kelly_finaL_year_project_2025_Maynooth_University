@@ -15,7 +15,7 @@ Controls which information can be displayed
 Allows entering of specialised editing mode for tracks
 */
 
-int steps = 180;
+int steps = 100;
 
 boolean excel = false;
 boolean showWaypoints = false;
@@ -28,6 +28,7 @@ boolean edit = false;
 boolean brands = false;
 boolean bahrain = false;
 boolean circle = false;
+boolean genetic = false;
 
 Button[] buttons;
 
@@ -123,7 +124,47 @@ void setup() {
       () -> rebuildScene(),
       () -> true,
       true
-    )
+    ),
+    
+    new Button(bx, by += bh + gap, bw, bh, "Genetic",
+      () -> genetic = !genetic,
+      () -> genetic,
+      false
+    ),
+    
+    new Button(bx, by += bh + gap + 12, smallW, bh, "-100 R",
+      () -> { rounds = max(10, rounds - 100); },
+      () -> true,
+      true
+    ),
+    new Button(bx + smallW + gap, by, smallW, bh, "+100 R",
+      () -> { rounds += 100; },
+      () -> true,
+      true
+    ),
+    
+    new Button(bx, by += bh + gap, smallW, bh, "-10 Pop",
+      () -> { pop = max(10, pop - 10); },
+      () -> true,
+      true
+    ),
+    new Button(bx + smallW + gap, by, smallW, bh, "+10 Pop",
+      () -> { pop += 10; },
+      () -> true,
+      true
+    ),
+    
+    new Button(bx, by += bh + gap, smallW, bh, "-10 Keep",
+      () -> { keep = max(1, keep - 10); },
+      () -> true,
+      true
+    ),
+    new Button(bx + smallW + gap, by, smallW, bh, "+10 Keep",
+      () -> { keep += 10; },
+      () -> true,
+      true
+    ),
+
   };
 
   rebuildScene();
@@ -141,9 +182,12 @@ void drawUI() {
   for (Button b : buttons) b.draw();
 
   fill(0);
-  textSize(14);
-  textAlign(CENTER);
-  text("Steps: " + steps, width - 115, 730);
+  textSize(16);
+  textAlign(LEFT);
+  text("Steps: " + steps, 20, 230);
+  text("Genetic Population: " + pop, 20, 260);
+  text("Genetic Rounds: " + rounds, 20, 290);
+  text("Genetic Keep: " + keep, 20, 320);
   textAlign(LEFT);
 }
 

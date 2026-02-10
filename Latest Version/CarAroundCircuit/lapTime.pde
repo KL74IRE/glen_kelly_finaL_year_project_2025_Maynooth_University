@@ -73,6 +73,7 @@ double getOptimalLap(double[][][] telemetry, double[][][] speeds, int steps, dou
       dp[j][i] = bestPrev + dt;
     }
   }
+  println();
 
   int endlane = 0;
   if (dp[1][steps - 1] < dp[endlane][steps - 1]) endlane = 1;
@@ -87,7 +88,7 @@ double getOptimalLap(double[][][] telemetry, double[][][] speeds, int steps, dou
   }
   stroke(0, 255, 0);
   strokeWeight(10);
-
+  
   for (int i = 1; i < steps; i++) {
     int jPrev = optimalj[i - 1];
     int jCurr = optimalj[i];
@@ -96,8 +97,11 @@ double getOptimalLap(double[][][] telemetry, double[][][] speeds, int steps, dou
     float yPrev = (float) speeds[jPrev][i - 1][1];
     float xCurr = (float) speeds[jCurr][i][0];
     float yCurr = (float) speeds[jCurr][i][1];
-
-    line(xPrev, yPrev, xCurr, yCurr);
+    
+    if(genetic == false)
+    {
+      line(xPrev, yPrev, xCurr, yCurr);
+    }
   }
   stroke(0);
   strokeWeight(2);
