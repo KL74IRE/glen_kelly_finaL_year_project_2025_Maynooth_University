@@ -23,7 +23,6 @@ double getRandomBestLap(double[][][] basePoints, double ratio)
 
   for (int r = 0; r < rounds; r++)
   {
-
     double a = (rounds <= 1) ? 1.0 : (double)r / (double)(rounds - 1);
     double sigma = sigmaStart + (sigmaEnd - sigmaStart) * a;
 

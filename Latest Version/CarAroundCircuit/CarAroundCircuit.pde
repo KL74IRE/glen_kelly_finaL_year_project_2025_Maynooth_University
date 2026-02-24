@@ -29,6 +29,8 @@ boolean brands = false;
 boolean bahrain = false;
 boolean circle = false;
 boolean genetic = false;
+boolean hasError = false;
+String testMessage = "";   // will show "TESTS PASSED/FAILED"
 
 Button[] buttons;
 
@@ -172,6 +174,7 @@ void setup() {
 
 void draw() {
   drawUI();
+  displayTestMessage();
 }
 
 void drawUI() {
@@ -191,6 +194,21 @@ void drawUI() {
   textAlign(LEFT);
 }
 
+void displayTestMessage() {
+  textAlign(LEFT, TOP);
+  textSize(24);
+
+  // background pill
+  noStroke();
+  fill(255, 240);
+  rect(12, 912, 260, 38, 8);
+
+  if (hasError) fill(255, 0, 0);
+  else          fill(0, 180, 0);
+
+  text(testMessage, 20, 916);
+}
+
 void mousePressed() {
   for (Button b : buttons) {
     if (b.hit(mouseX, mouseY)) {
@@ -202,8 +220,15 @@ void mousePressed() {
 }
 
 void rebuildScene() {
+  testMessage = "REBUILDING...";
+  hasError = false;
+
   background(255);
   runScene();
+
+  if (!edit && !brands && !bahrain && !circle) {
+    testMessage = "SELECT A TRACK";
+  }
 }
 
 void runScene() {
