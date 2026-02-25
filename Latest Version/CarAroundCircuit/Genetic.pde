@@ -1,7 +1,7 @@
 // --- GA Globals ---
-int generations = 5000;
-int population  = 50;
-int elites      = 5;
+int generations = 2000;
+int population  = 150;
+int elites      = 15;
 
 float[][] genes, nextGenes;
 double[] currentFitness;
@@ -49,7 +49,9 @@ double getGeneticBestLap(double[][][] points, double ratio, int steps) {
         updateBestVisual(steps);
       }
     }
-    evolve(steps);
+    // Inside the for (int i = 0; i < generations; i++) loop:
+    evolve(steps, i); // Pass 'i' so the function knows which generation it's on
+
   }
   return globalBest;
 }
@@ -134,7 +136,15 @@ double getRadius(float x1, float y1, float x2, float y2, float x3, float y3) {
 // =========================================================
 // EVOLUTIONARY STEP (Selection, Crossover, Mutation)
 // =========================================================
-void evolve(int steps) {
+void evolve(int steps, int currentGen) { // Added 'currentGen' here
+  
+  // Calculate how far along we are (0.0 to 1.0)
+  float progress = (float)currentGen / generations; 
+  
+  // Calculate Mutation Power: Starts at 0.15 (wide search) and 'cools' to 0.02 (fine-tuning)
+  float power = lerp(0.15f, 0.02f, progress);
+  
+  // ... (rest of your sorting and elitism code stays the same
   // 1. Sort the current population by lap time (lowest is best)
   int[] order = argsortByFitness(currentFitness);
 
@@ -147,18 +157,22 @@ void evolve(int steps) {
   // 3. Fill the rest of the population
   for (int idx = elites; idx < population; idx++) {
     // Tournament selection: pick two parents
-    int p1 = tournamentPick(currentFitness, 3);
-    int p2 = tournamentPick(currentFitness, 3);
+    int p1 = tournamentPick(currentFitness, 6);
+    int p2 = tournamentPick(currentFitness, 6);
 
     // Combine parents (Crossover)
-    crossoverTwoPoint(genes[p1], genes[p2], nextGenes[idx], steps);
+    // Replace the old crossoverTwoPoint line with this:
+    crossoverArithmetic(genes[p1], genes[p2], nextGenes[idx], steps);
+
 
     // Randomly change some genes (Mutation)
-    mutate(nextGenes[idx], steps, 0.05f, 0.12f);
+    // Change this line inside the population loop:
+    mutate(nextGenes[idx], steps, 0.08f, power); 
 
-    // Occasional smoothing mutation to keep the line "drivable"
-    if (random(1) < 0.2f) {
-      smoothGenesInPlace(nextGenes[idx], steps, 1);
+
+    // Increase probability to 40% and passes to 3-5 for high step counts
+    if (random(1) < 0.4f) {
+      smoothGenesInPlace(nextGenes[idx], steps, 3);
     }
   }
 
@@ -180,27 +194,25 @@ int tournamentPick(double[] fitness, int k) {
   return best;
 }
 
-// --- Helper: Crossover ---
-void crossoverTwoPoint(float[] p1, float[] p2, float[] child, int steps) {
-  int cp1 = (int)random(steps);
-  int cp2 = (int)random(steps);
-  if (cp1 > cp2) { int t = cp1; cp1 = cp2; cp2 = t; }
-
+void crossoverArithmetic(float[] p1, float[] p2, float[] child, int steps) {
+  float weight = random(0.2, 0.8);
   for (int i = 0; i < steps; i++) {
-    child[i] = (i >= cp1 && i <= cp2) ? p1[i] : p2[i];
+    // Blends the two parents instead of cutting them
+    child[i] = (p1[i] * weight) + (p2[i] * (1.0f - weight));
   }
 }
 
-// --- Helper: Mutation ---
-// Increase power if the track is wide (e.g., power = 0.15f)
 void mutate(float[] g, int steps, float rate, float power) {
   for (int i = 0; i < steps; i++) {
     if (random(1) < rate) {
-      g[i] += random(-power, power);
-      // STRICT CONSTRAINT: Ensure genes never exceed the 0.0-1.0 range
-      // which represents the boundaries set by your 'offset'
-      if (g[i] < 0.0f) g[i] = 0.0f;
-      if (g[i] > 1.0f) g[i] = 1.0f;
+      float change = random(-power, power);
+      // Mutate a window of 5-10 points to keep the curve logical
+      int window = 5; 
+      for(int w = -window; w <= window; w++) {
+        int idx = (i + w + steps) % steps;
+        g[idx] += change * (1.0 - abs(w)/(float)window); // Taper the effect
+        g[idx] = constrain(g[idx], 0.0f, 1.0f);
+      }
     }
   }
 }
