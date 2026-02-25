@@ -23,7 +23,7 @@ void main(double [] x,double [] y,int start,int end, int steps,int mTrackLength,
     testing(ratio,trackPoints,points,radius,speeds,telemetry,lapTime,geneticBest,steps);
     if(genetic == true)
     {
-      geneticBest = getRandomBestLap(points, ratio);
+      geneticBest = getGeneticBestLap(points, ratio, steps);
     }
     drawLapTimes(lapTime,geneticBest);
     drawTrack(x, y, 800, 10.0);
