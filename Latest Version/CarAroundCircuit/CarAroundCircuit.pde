@@ -135,34 +135,34 @@ void setup() {
     ),
     
     new Button(bx, by += bh + gap + 12, smallW, bh, "-100 R",
-      () -> { rounds = max(10, rounds - 100); },
+      () -> { generations = max(10, generations - 100); },
       () -> true,
       true
     ),
     new Button(bx + smallW + gap, by, smallW, bh, "+100 R",
-      () -> { rounds += 100; },
+      () -> { generations += 100; },
       () -> true,
       true
     ),
     
     new Button(bx, by += bh + gap, smallW, bh, "-10 Pop",
-      () -> { pop = max(10, pop - 10); },
+      () -> { population = max(10, population - 10); },
       () -> true,
       true
     ),
     new Button(bx + smallW + gap, by, smallW, bh, "+10 Pop",
-      () -> { pop += 10; },
+      () -> { population += 10; },
       () -> true,
       true
     ),
     
-    new Button(bx, by += bh + gap, smallW, bh, "-10 Keep",
-      () -> { keep = max(1, keep - 10); },
+    new Button(bx, by += bh + gap, smallW, bh, "-10 Elites",
+      () -> { elites = max(1, elites - 10); },
       () -> true,
       true
     ),
-    new Button(bx + smallW + gap, by, smallW, bh, "+10 Keep",
-      () -> { keep += 10; },
+    new Button(bx + smallW + gap, by, smallW, bh, "+10 Elites",
+      () -> { elites += 10; },
       () -> true,
       true
     ),
@@ -188,9 +188,9 @@ void drawUI() {
   textSize(16);
   textAlign(LEFT);
   text("Steps: " + steps, 20, 230);
-  text("Genetic Population: " + pop, 20, 260);
-  text("Genetic Rounds: " + rounds, 20, 290);
-  text("Genetic Keep: " + keep, 20, 320);
+  text("Genetic Population: " + population, 20, 260);
+  text("Genetic generations: " + generations, 20, 290);
+  text("Genetic Keep: " + elites, 20, 320);
   textAlign(LEFT);
 }
 
