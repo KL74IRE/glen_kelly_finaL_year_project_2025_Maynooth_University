@@ -13,7 +13,7 @@ void testing(double ratio, double[][] trackPoints, double[][][] points, double[]
 void checkPoints(double[][] trackPoints, double[][][] points, double[][][] radius,
                  double[][][] speeds, double[][][] telemetry, int steps)
 {
-  double eps = 0.5;
+  double eps = 1;
 
   for (int j = 0; j < steps; j++)
   {

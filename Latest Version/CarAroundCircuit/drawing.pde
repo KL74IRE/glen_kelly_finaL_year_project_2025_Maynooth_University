@@ -2,7 +2,7 @@ import org.apache.commons.math3.analysis.UnivariateFunction;
 import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
 
-void drawTrack(double[] x, double[] y, int steps, double offset)
+void drawTrack(double[] x, double[] y, int steps)
 {
   if (x.length < 3) return;
   double[] s = new double[x.length];

@@ -26,7 +26,7 @@ void main(double [] x,double [] y,int start,int end, int steps,int mTrackLength,
       geneticBest = getGeneticBestLap(points, ratio, steps);
     }
     drawLapTimes(lapTime,geneticBest);
-    drawTrack(x, y, 800, 10.0);
+    drawTrack(x, y, 800);
     visualisationAllLanes(x, y, speeds, telemetry, steps, showWaypoints, showPoints, showSpeeds, telemetryS, lapTime);
     if(excel){saveSpeedsToExcel(radius,steps,getTyres(),telemetry);}
 }

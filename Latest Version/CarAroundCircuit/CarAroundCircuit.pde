@@ -166,6 +166,17 @@ void setup() {
       true
     ),
 
+    new Button(bx, by += bh + gap, smallW, bh, "-1 width",
+      () -> { offset = max(1, offset - 1); },
+      () -> true,
+      true
+    ),
+    new Button(bx + smallW + gap, by, smallW, bh, "+1 width",
+      () -> { offset += 1; },
+      () -> true,
+      true
+    ),
+
   };
 
   rebuildScene();

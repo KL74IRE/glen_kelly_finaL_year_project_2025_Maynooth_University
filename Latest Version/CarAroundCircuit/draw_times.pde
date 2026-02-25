@@ -24,13 +24,12 @@ void drawLapTimes(double[][] times, double geneticBest)
     text(s, x, y + j * lineH);
   }
 
-  // ---- draw genetic best lap ----
   if (geneticBest > 0 && !Double.isInfinite(geneticBest))
   {
     int gMin = (int)(geneticBest / 60.0);
     double gSec = geneticBest - gMin * 60.0;
 
-    fill(128, 0, 128); // purple
+    fill(128, 0, 128);
 
     String g = String.format("Genetic: %02d:%06.3f", gMin, gSec);
     text(g, x, y + times.length * lineH);

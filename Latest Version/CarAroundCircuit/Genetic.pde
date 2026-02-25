@@ -15,34 +15,33 @@ boolean hasBestLine = false;
 // THE SPLINE-BASED GA LOGIC
 // =========================================================
 double getGeneticBestLap(double[][][] points, double ratio, int steps) {
-  // Initialization
-  genes = new float[population][steps]; // FIX: match current steps
-  nextGenes = new float[population][steps]; // FIX: match current steps
+  // 1. Initialization
+  genes = new float[population][steps];
+  nextGenes = new float[population][steps];
   currentFitness = new double[population];
   lineX = new float[steps]; 
   lineY = new float[steps];
   vMax = new float[steps]; 
   v = new float[steps];
-  bestVisualX = new float[steps]; // FIX: prevent visual crash
-  bestVisualY = new float[steps]; // FIX: prevent visual crash
+  bestVisualX = new float[steps];
+  bestVisualY = new float[steps];
 
-
+  // 2. Initial Population (Moved inside the function)
   for (int p = 0; p < population; p++) {
-    for (int j = 0; j < steps; j++) genes[p][j] = random(1.0f);
+    for (int j = 0; j < steps; j++) {
+      genes[p][j] = random(0.0f, 1.0f); // Now covers 0 to 100% of your offset
+    }
     smoothGenesInPlace(genes[p], steps, 5);
   }
 
   double globalBest = Double.MAX_VALUE;
 
+  // 3. Evolution Loop
   for (int i = 0; i < generations; i++) {
     for (int p = 0; p < population; p++) {
-      // Use Spline to build the path
       generateSplinePath(genes[p], points, steps);
-      
-      // Calculate physics based on spline curvature
       calculatePhysics(1.2f, steps); 
       getTelemetry(5.0f, 8.0f, (float)ratio, steps);
-      
       currentFitness[p] = getLapTime((float)ratio, steps);
 
       if (currentFitness[p] < globalBest) {
@@ -55,10 +54,9 @@ double getGeneticBestLap(double[][][] points, double ratio, int steps) {
   return globalBest;
 }
 
-// 1. Path Generation using Catmull-Rom Spline
 void generateSplinePath(float[] genome, double[][][] points, int steps) {
   for (int i = 0; i < steps; i++) {
-    // We use the raw lerped points as control nodes
+    // Correctly lerps between Inner (0) and Outer (2) boundaries
     lineX[i] = lerp((float)points[0][i][0], (float)points[2][i][0], genome[i]);
     lineY[i] = lerp((float)points[0][i][1], (float)points[2][i][1], genome[i]);
   }
@@ -194,11 +192,15 @@ void crossoverTwoPoint(float[] p1, float[] p2, float[] child, int steps) {
 }
 
 // --- Helper: Mutation ---
+// Increase power if the track is wide (e.g., power = 0.15f)
 void mutate(float[] g, int steps, float rate, float power) {
   for (int i = 0; i < steps; i++) {
     if (random(1) < rate) {
       g[i] += random(-power, power);
-      g[i] = constrain(g[i], 0.0f, 1.0f); // Keep within track bounds
+      // STRICT CONSTRAINT: Ensure genes never exceed the 0.0-1.0 range
+      // which represents the boundaries set by your 'offset'
+      if (g[i] < 0.0f) g[i] = 0.0f;
+      if (g[i] > 1.0f) g[i] = 1.0f;
     }
   }
 }
