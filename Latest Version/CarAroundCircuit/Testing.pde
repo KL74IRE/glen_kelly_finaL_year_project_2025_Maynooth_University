@@ -10,9 +10,7 @@ void testing(double ratio, double[][] trackPoints, double[][][] points, double[]
   testMessage = hasError ? "TESTS FAILED" : "TESTS PASSED";
 }
 
-void checkPoints(double[][] trackPoints, double[][][] points, double[][][] radius,
-                 double[][][] speeds, double[][][] telemetry, int steps)
-{
+void checkPoints(double[][] trackPoints, double[][][] points, double[][][] radius,double[][][] speeds, double[][][] telemetry, int steps){
   double eps = 1;
 
   for (int j = 0; j < steps; j++)
@@ -111,3 +109,4 @@ void checkPoints(double[][] trackPoints, double[][][] points, double[][][] radiu
     }
   }
 }
+

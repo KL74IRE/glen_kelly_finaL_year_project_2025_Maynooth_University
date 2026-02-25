@@ -1,4 +1,4 @@
-int offset = 20;
+int offset = 10;
 
 double[][][] get2DPoints(double[][] trackPoints, int steps, boolean trackLines)
 {

@@ -48,19 +48,9 @@ void setup() {
   float smallW = (bw - gap) / 2;
 
   buttons = new Button[] {
-    new Button(bx, by, bw, bh, "Excel",
-      () -> excel = !excel,
-      () -> excel,
-      false
-    ),
     new Button(bx, by += bh + gap, bw, bh, "Waypoints",
       () -> showWaypoints = !showWaypoints,
       () -> showWaypoints,
-      false
-    ),
-    new Button(bx, by += bh + gap, bw, bh, "Points",
-      () -> showPoints = !showPoints,
-      () -> showPoints,
       false
     ),
     new Button(bx, by += bh + gap, bw, bh, "Speeds",
@@ -68,17 +58,11 @@ void setup() {
       () -> showSpeeds,
       false
     ),
-    new Button(bx, by += bh + gap, bw, bh, "TPs",
-      () -> showTPs = !showTPs,
-      () -> showTPs,
-      false
-    ),
     new Button(bx, by += bh + gap, bw, bh, "TelemetryS",
       () -> telemetryS = !telemetryS,
       () -> telemetryS,
       false
     ),
-
     new Button(bx, by += bh + gap + 12, bw, bh, "Edit Mode",
       () -> { edit = true; brands = false; bahrain = false; circle = false; },
       () -> edit,
@@ -117,6 +101,17 @@ void setup() {
     ),
     new Button(bx + smallW + gap, by, smallW, bh, "+1000",
       () -> { steps += 1000; rebuildScene(); },
+      () -> true,
+      true
+    ),
+
+    new Button(bx, by += bh + gap, smallW, bh, "-1 width",
+      () -> { offset = max(1, offset - 1); },
+      () -> true,
+      true
+    ),
+    new Button(bx + smallW + gap, by, smallW, bh, "+1 width",
+      () -> { offset += 1; },
       () -> true,
       true
     ),
@@ -162,17 +157,6 @@ void setup() {
     ),
     new Button(bx + smallW + gap, by, smallW, bh, "+10 Elites",
       () -> { elites += 10; },
-      () -> true,
-      true
-    ),
-
-    new Button(bx, by += bh + gap, smallW, bh, "-1 width",
-      () -> { offset = max(1, offset - 1); },
-      () -> true,
-      true
-    ),
-    new Button(bx + smallW + gap, by, smallW, bh, "+1 width",
-      () -> { offset += 1; },
       () -> true,
       true
     ),
