@@ -15,7 +15,7 @@ Controls which information can be displayed
 Allows entering of specialised editing mode for tracks
 */
 
-int steps = 100;
+public int steps = 100;
 
 boolean excel = false;
 boolean showWaypoints = false;
@@ -40,7 +40,6 @@ interface BoolSupplier {
 
 void setup() {
   size(1920, 980);
-
   float bx = width - 200;
   float by = 30;
   float bw = 170;
@@ -175,6 +174,10 @@ void setup() {
 void draw() {
   drawUI();
   displayTestMessage();
+  if(genetic)
+  {
+    drawBestLine();
+  }
 }
 
 void drawUI() {
