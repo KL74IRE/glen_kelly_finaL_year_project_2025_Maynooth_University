@@ -116,15 +116,16 @@ void visualisationAllLanes(
 
   if (points) drawPointIndices(speeds[1], steps);
   
-  drawLane(speeds[0], telemetry[0], steps, speedLabels, telemetryLabels, #FF0000, #7A00FF);
-  drawLane(speeds[1], telemetry[1], steps, speedLabels, telemetryLabels, #0066FF, #4B0082);
-  drawLane(speeds[2], telemetry[2], steps, speedLabels, telemetryLabels, #FF8800, #4B0082);
+  if(one){drawLane(speeds[0], telemetry[0], steps, speedLabels, telemetryLabels, #FF0000, #FF0000);}
+  else if(two){drawLane(speeds[1], telemetry[1], steps, speedLabels, telemetryLabels, #0066FF, #0066FF);}
+  else if(three){drawLane(speeds[2], telemetry[2], steps, speedLabels, telemetryLabels, #FF8800, #FF8800);} 
+  else if(showShortest){drawShortest(shortestSpeeds, shortestVmax, steps, speedLabels, telemetryLabels, #00FF00, #00FF00);}
 
   drawLapTimesHUD(lapTime);
 }
 
 void drawWaypoints(double[] x, double[] y) {
-  for (int i = 0; i < x.length; i++) drawPoints(x[i], y[i], #9D00FF, 25);
+  for (int i = 0; i < x.length; i++) drawPoints(x[i], y[i], #9D00FF, 12);
 }
 
 double slopeBetween(double[][] pts, int i, int steps) {
@@ -175,18 +176,152 @@ void drawPointIndices(double[][] speedsLane, int steps) {
   }
 }
 
+void drawShortest(double[] speeds, double[] vMax, int steps, boolean speedLabels, boolean telemetryLabels, int laneColour, int telemetryTextColour)
+{
+  // 1. Draw the Smooth Spline
+  noFill();
+  stroke(laneColour);
+  strokeWeight(3);
+  
+  beginShape();
+  // For a closed loop, curveVertex needs the last point first and the first point last as control points
+  curveVertex((float)xShortest[steps-1], (float)yShortest[steps-1]); 
+  
+  for (int i = 0; i < steps; i++) {
+    curveVertex((float)xShortest[i], (float)yShortest[i]);
+    
+    // 2. Logic for labels (optional, based on your parameters)
+    if (speedLabels && i % 10 == 0) { // Only draw every 10th for readability
+      textSize(10);
+      text(nf((float)speeds[i], 0, 1), (float)xShortest[i] + 5, (float)yShortest[i] - 5);
+    }
+  }
+  
+  curveVertex((float)xShortest[0], (float)yShortest[0]); // Closing control point
+  curveVertex((float)xShortest[1], (float)yShortest[1]); // Extra control point for smooth closure
+  endShape(CLOSE);
+  
+  if(!genetic){
+  for (int i = 0; i < steps; i++) {
+    drawPoints(xShortest[i], yShortest[i], laneColour, 12);
+  }}
+
+  if (speedLabels && genetic==false) {
+    textSize(12);
+    for (int i = 0; i < steps; i++) {
+      fill(laneColour);
+      double[][] shortestPts = new double[steps][2];
+      for (int j = 0; j < steps; j++) {
+        shortestPts[j][0] = xShortest[j];
+        shortestPts[j][1] = yShortest[j];
+      }
+      double slope = slopeBetween(shortestPts, i, steps);
+      String label = nf((float)vMax[i], 3, 1);
+
+      drawLabelAtPoint(
+        xShortest[i], yShortest[i],
+        i, slope, label,
+        15, -65,
+        16.5, -16.5,
+        -5
+      );
+    }
+  }
+  else if (telemetryLabels && genetic==false) {
+    textSize(12);
+    for (int i = 0; i < steps; i++) {
+      fill(telemetryTextColour);
+      double[][] shortestPts = new double[steps][2];
+      for (int j = 0; j < steps; j++) {
+        shortestPts[j][0] = xShortest[j];
+        shortestPts[j][1] = yShortest[j];
+      }
+      double slope = slopeBetween(shortestPts, i, steps);
+      String label = nf((float)speeds[i], 3, 1);
+
+      drawLabelAtPoint(
+        xShortest[i], yShortest[i],
+        i, slope, label,
+        15, -65,
+        16.5, -16.5,
+        -5
+      );
+    }
+  }
+  else if (speedLabels && genetic && lineX != null && lineY != null)
+  {
+    for (int i = 0; i < steps; i++) {
+    drawPoints(lineX[i], lineY[i],#9D00FF , 12);
+
+    }
+    textSize(12);
+    for (int i = 0; i < steps; i++) {
+      double x = lineX[i];
+      double y = lineY[i];
+      double speed = geneticVMax[i];
+      
+      // Calculate slope from genetic line points
+      int next = (i < steps - 1) ? (i + 1) : 0;
+      double dx = lineX[next] - lineX[i];
+      double dy = lineY[next] - lineY[i];
+      double slope = (Math.abs(dx) < 1e-9) ? ((dy >= 0) ? 1e9 : -1e9) : (dy / dx);
+      
+      String label = nf((float)speed, 3, 1);
+
+      drawLabelAtPoint(
+        x, y,
+        i, slope, label,
+        15, -65,
+        16.5, -16.5,
+        -5
+      );
+    }
+  }
+
+  else if (telemetryLabels && genetic && lineX != null && lineY != null)
+  {
+    for (int i = 0; i < steps; i++) {
+    drawPoints(lineX[i], lineY[i],#9D00FF ,12);
+    }
+
+    textSize(12);
+    for (int i = 0; i < steps; i++) {
+      double x = lineX[i];
+      double y = lineY[i];
+      double speed = v[i];
+      
+      // Calculate slope from genetic line points
+      int next = (i < steps - 1) ? (i + 1) : 0;
+      double dx = lineX[next] - lineX[i];
+      double dy = lineY[next] - lineY[i];
+      double slope = (Math.abs(dx) < 1e-9) ? ((dy >= 0) ? 1e9 : -1e9) : (dy / dx);
+      
+      String label = nf((float)speed, 3, 1);
+
+      drawLabelAtPoint(
+        x, y,
+        i, slope, label,
+        15, -65,
+        16.5, -16.5,
+        -5
+      );
+    }
+  }
+}
+
 void drawLane(
   double[][] speedsLane, double[][] telemetryLane,
   int steps,
   boolean speedLabels, boolean telemetryLabels,
   int laneColour, int telemetryTextColour
 ){
+  if(!genetic){
   for (int i = 0; i < steps; i++) {
-    drawPoints(speedsLane[i][0], speedsLane[i][1], laneColour, 5);
-  }
+    drawPoints(speedsLane[i][0], speedsLane[i][1], laneColour, 12);
+  }}
 
   if (speedLabels && genetic==false) {
-    textSize(8);
+    textSize(12);
     for (int i = 0; i < steps; i++) {
       fill(laneColour);
       double slope = slopeBetween(speedsLane, i, steps);
@@ -203,7 +338,10 @@ void drawLane(
   }
   else if (speedLabels && genetic && lineX != null && lineY != null)
   {
-    textSize(8);
+    for (int i = 0; i < steps; i++) {
+    drawPoints(lineX[i], lineY[i],#9D00FF , 12);
+    }
+    textSize(12);
     for (int i = 0; i < steps; i++) {
       double x = lineX[i];
       double y = lineY[i];
@@ -228,7 +366,7 @@ void drawLane(
   }
 
   if (telemetryLabels && genetic==false) {
-    textSize(8);
+    textSize(12);
     for (int i = 0; i < steps; i++) {
       fill(telemetryTextColour);
       double slope = slopeBetween(telemetryLane, i, steps);
@@ -240,6 +378,35 @@ void drawLane(
         35, -85,
         36.5, -36.5,
         -25
+      );
+    }
+  }
+
+  else if (telemetryLabels && genetic && lineX != null && lineY != null)
+  {
+    for (int i = 0; i < steps; i++) {
+    drawPoints(lineX[i], lineY[i],#9D00FF , 12);
+    }
+    textSize(12);
+    for (int i = 0; i < steps; i++) {
+      double x = lineX[i];
+      double y = lineY[i];
+      double speed = v[i];
+      
+      // Calculate slope from genetic line points
+      int next = (i < steps - 1) ? (i + 1) : 0;
+      double dx = lineX[next] - lineX[i];
+      double dy = lineY[next] - lineY[i];
+      double slope = (Math.abs(dx) < 1e-9) ? ((dy >= 0) ? 1e9 : -1e9) : (dy / dx);
+      
+      String label = nf((float)speed, 3, 1);
+
+      drawLabelAtPoint(
+        x, y,
+        i, slope, label,
+        15, -65,
+        16.5, -16.5,
+        -5
       );
     }
   }

@@ -32,6 +32,11 @@ boolean genetic = false;
 boolean hasError = false;
 String testMessage = "";   // will show "TESTS PASSED/FAILED"
 
+boolean one = true;
+boolean two = false;
+boolean three = false;
+boolean showShortest = false;
+
 Button[] buttons;
 
 interface BoolSupplier {
@@ -46,20 +51,42 @@ void setup() {
   float bh = 36;
   float gap = 8;
   float smallW = (bw - gap) / 2;
+  float smallW2 = (bw - gap) / 2;
+  float smallW3 = (bw - gap * 2) / 3;
 
   buttons = new Button[] {
+    new Button(bx, by += bh + gap + 12, smallW3, bh, "1",
+      () -> { one = true; two = false; three = false; showShortest = false; },
+      () -> one,
+      false
+    ),
+    new Button(bx + smallW3 + gap, by, smallW3, bh, "2",
+      () -> { one = false; two = true; three = false; showShortest = false; },
+      () -> two,
+      false
+    ),
+    new Button(bx + smallW3 * 2 + gap * 2, by, smallW3, bh, "3",
+      () -> { one = false; two = false; three = true; showShortest = false; },
+      () -> three,
+      false
+    ),
+    new Button(bx, by += bh + gap, bw, bh, "Shortest",
+      () -> { one = false; two = false; three = false; showShortest = true; },
+      () -> showShortest,
+      false
+    ),
     new Button(bx, by += bh + gap, bw, bh, "Waypoints",
       () -> showWaypoints = !showWaypoints,
       () -> showWaypoints,
       false
     ),
-    new Button(bx, by += bh + gap, bw, bh, "Speeds",
-      () -> showSpeeds = !showSpeeds,
+    new Button(bx, by += bh + gap, bw, bh, "Vmax Possible",
+      () -> { showSpeeds = !showSpeeds; if (showSpeeds) telemetryS = false; },
       () -> showSpeeds,
       false
     ),
-    new Button(bx, by += bh + gap, bw, bh, "TelemetryS",
-      () -> telemetryS = !telemetryS,
+    new Button(bx, by += bh + gap, bw, bh, "Telemetry Speed",
+      () -> { telemetryS = !telemetryS; if (telemetryS) showSpeeds = false; },
       () -> telemetryS,
       false
     ),
@@ -160,6 +187,16 @@ void setup() {
       () -> true,
       true
     ),
+        new Button(bx, by += bh + gap + 12, smallW2, bh, "-100",
+      () -> { steps = max(100, steps - 100); rebuildScene(); },
+      () -> true,
+      true
+    ),
+    new Button(bx + smallW2 + gap, by, smallW2, bh, "+100",
+      () -> { steps += 100; rebuildScene(); },
+      () -> true,
+      true
+    ),
 
   };
 
@@ -186,9 +223,10 @@ void drawUI() {
   textSize(16);
   textAlign(LEFT);
   text("Steps: " + steps, 20, 230);
-  text("Genetic Population: " + population, 20, 260);
-  text("Genetic generations: " + generations, 20, 290);
-  text("Genetic Keep: " + elites, 20, 320);
+  text("Track Width: " + String.format("%.2f", offset*2/gRatio) + "m", 20, 260);
+  text("Genetic Population: " + population, 20, 290);
+  text("Genetic generations: " + generations, 20, 320);
+  text("Genetic Keep: " + elites, 20, 350);
   textAlign(LEFT);
 }
 

@@ -1,3 +1,4 @@
+double gRatio;
 double ratio(double [] x, double [] y, int start, int end, int steps, double mTrackLength)
 {
   double[] s = new double[x.length];
@@ -24,6 +25,7 @@ double ratio(double [] x, double [] y, int start, int end, int steps, double mTr
     prevY = ty;
     }
   double ratio = totalLength/mTrackLength;
+  gRatio = ratio;
   return(ratio);
 
 }

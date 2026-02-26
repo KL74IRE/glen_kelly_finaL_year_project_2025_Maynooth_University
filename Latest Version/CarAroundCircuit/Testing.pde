@@ -124,9 +124,11 @@ void checkRandomRadius(double[][][] radius, int steps, double ratio)
 
     //Generate a number between 0 and steps-1
     int randomIndex = (int)(Math.random() * steps);
+    // wrap previous index to avoid -1
+    int prevIndex = (randomIndex == 0) ? steps - 1 : randomIndex - 1;
 
-    double x1 = radius[(int)randomLane][randomIndex-1][0];
-    double y1 = radius[(int)randomLane][randomIndex-1][1];
+    double x1 = radius[(int)randomLane][prevIndex][0];
+    double y1 = radius[(int)randomLane][prevIndex][1];
     double x2 = radius[(int)randomLane][randomIndex][0];
     double y2 = radius[(int)randomLane][randomIndex][1];
     double x3 = radius[(int)randomLane][randomIndex][0];
