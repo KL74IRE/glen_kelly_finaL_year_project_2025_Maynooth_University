@@ -227,7 +227,7 @@ void drawLane(
     }
   }
 
-  if (telemetryLabels) {
+  if (telemetryLabels && genetic==false) {
     textSize(8);
     for (int i = 0; i < steps; i++) {
       fill(telemetryTextColour);
