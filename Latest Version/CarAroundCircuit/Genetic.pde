@@ -5,7 +5,8 @@ int elites      = 15;
 
 float[][] genes, nextGenes;
 double[] currentFitness;
-float[] lineX, lineY, vMax, v;
+float[] lineX, lineY, v;
+float[] geneticVMax; 
 
 // --- Visualization Globals ---
 float[] bestVisualX, bestVisualY;
@@ -21,8 +22,8 @@ double getGeneticBestLap(double[][][] points, double ratio, int steps) {
   currentFitness = new double[population];
   lineX = new float[steps]; 
   lineY = new float[steps];
-  vMax = new float[steps]; 
   v = new float[steps];
+  geneticVMax = new float[steps];
   bestVisualX = new float[steps];
   bestVisualY = new float[steps];
 
@@ -71,16 +72,16 @@ void calculatePhysics(float mu, int steps, double ratio) {
     int prev = (j - 1 + steps) % steps;
     int next = (j + 1) % steps;
     double r = getRadius(lineX[prev], lineY[prev], lineX[j], lineY[j], lineX[next], lineY[next],ratio);
-    vMax[j] = sqrt(mu * 9.81f * (float)r);
+    geneticVMax[j] = sqrt(mu * 9.81f * (float)r);
   }
 }
 
 // 3. Telemetry Pass
 void getTelemetry(float acc, float dec, float ratio, int steps) {
-  v[0] = min(15.0f, vMax[0]);
+  v[0] = min(15.0f, geneticVMax[0]);
   for (int i = 1; i < steps; i++) {
     float s = dist(lineX[i-1], lineY[i-1], lineX[i], lineY[i]) / ratio;
-    v[i] = min(sqrt(sq(v[i-1]) + 2 * acc * s), vMax[i]);
+    v[i] = min(sqrt(sq(v[i-1]) + 2 * acc * s), geneticVMax[i]);
   }
   for (int i = steps - 2; i >= 0; i--) {
     float s = dist(lineX[i], lineY[i], lineX[i+1], lineY[i+1]) / ratio;

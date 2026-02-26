@@ -115,7 +115,7 @@ void visualisationAllLanes(
   if (waypoints) drawWaypoints(x, y);
 
   if (points) drawPointIndices(speeds[1], steps);
-
+  
   drawLane(speeds[0], telemetry[0], steps, speedLabels, telemetryLabels, #FF0000, #7A00FF);
   drawLane(speeds[1], telemetry[1], steps, speedLabels, telemetryLabels, #0066FF, #4B0082);
   drawLane(speeds[2], telemetry[2], steps, speedLabels, telemetryLabels, #FF8800, #4B0082);
@@ -185,7 +185,7 @@ void drawLane(
     drawPoints(speedsLane[i][0], speedsLane[i][1], laneColour, 5);
   }
 
-  if (speedLabels) {
+  if (speedLabels && genetic==false) {
     textSize(8);
     for (int i = 0; i < steps; i++) {
       fill(laneColour);
@@ -194,6 +194,31 @@ void drawLane(
 
       drawLabelAtPoint(
         speedsLane[i][0], speedsLane[i][1],
+        i, slope, label,
+        15, -65,
+        16.5, -16.5,
+        -5
+      );
+    }
+  }
+  else if (speedLabels && genetic && lineX != null && lineY != null)
+  {
+    textSize(8);
+    for (int i = 0; i < steps; i++) {
+      double x = lineX[i];
+      double y = lineY[i];
+      double speed = geneticVMax[i];
+      
+      // Calculate slope from genetic line points
+      int next = (i < steps - 1) ? (i + 1) : 0;
+      double dx = lineX[next] - lineX[i];
+      double dy = lineY[next] - lineY[i];
+      double slope = (Math.abs(dx) < 1e-9) ? ((dy >= 0) ? 1e9 : -1e9) : (dy / dx);
+      
+      String label = nf((float)speed, 3, 1);
+
+      drawLabelAtPoint(
+        x, y,
         i, slope, label,
         15, -65,
         16.5, -16.5,
