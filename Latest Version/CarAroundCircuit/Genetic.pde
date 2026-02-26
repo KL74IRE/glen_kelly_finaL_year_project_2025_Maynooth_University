@@ -40,7 +40,8 @@ double getGeneticBestLap(double[][][] points, double ratio, int steps) {
   for (int i = 0; i < generations; i++) {
     for (int p = 0; p < population; p++) {
       generateSplinePath(genes[p], points, steps);
-      calculatePhysics(1.2f, steps); 
+      double[] tyres = getTyres();
+      calculatePhysics((float)tyres[0], steps, ratio); 
       getTelemetry(5.0f, 8.0f, (float)ratio, steps);
       currentFitness[p] = getLapTime((float)ratio, steps);
 
@@ -65,11 +66,11 @@ void generateSplinePath(float[] genome, double[][][] points, int steps) {
 }
 
 // 2. Physics & Curvature
-void calculatePhysics(float mu, int steps) {
+void calculatePhysics(float mu, int steps, double ratio) {
   for (int j = 0; j < steps; j++) {
     int prev = (j - 1 + steps) % steps;
     int next = (j + 1) % steps;
-    double r = getRadius(lineX[prev], lineY[prev], lineX[j], lineY[j], lineX[next], lineY[next]);
+    double r = getRadius(lineX[prev], lineY[prev], lineX[j], lineY[j], lineX[next], lineY[next],ratio);
     vMax[j] = sqrt(mu * 9.81f * (float)r);
   }
 }
@@ -125,12 +126,14 @@ void drawBestLine() {
   strokeWeight(2);
 }
 
-double getRadius(float x1, float y1, float x2, float y2, float x3, float y3) {
+double getRadius(float x1, float y1, float x2, float y2, float x3, float y3, double ratio) {
   double a = dist(x1, y1, x2, y2);
   double b = dist(x2, y2, x3, y3);
   double c = dist(x3, y3, x1, y1);
   double area = abs(x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2)) * 0.5;
-  return (area < 0.01) ? 10000 : (a * b * c) / (4 * area);
+  double hold = (area < 0.01) ? 10000 : (a * b * c) / (4 * area);
+  hold = hold / ratio;
+  return hold;
 }
 
 // =========================================================

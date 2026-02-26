@@ -20,7 +20,6 @@ void main(double [] x,double [] y,int start,int end, int steps,int mTrackLength,
     double [] [] [] telemetry = carAroundTrack(speeds,ratio,steps);
     double [] []  lapTime = lapTime(telemetry, speeds, steps ,ratio);
     double geneticBest = 0;
-    testing(ratio,trackPoints,points,radius,speeds,telemetry,lapTime,geneticBest,steps);
     if(genetic == true)
     {
       geneticBest = getGeneticBestLap(points, ratio, steps);
@@ -28,5 +27,6 @@ void main(double [] x,double [] y,int start,int end, int steps,int mTrackLength,
     drawLapTimes(lapTime,geneticBest);
     drawTrack(x, y, 800);
     visualisationAllLanes(x, y, speeds, telemetry, steps, showWaypoints, showPoints, showSpeeds, telemetryS, lapTime);
+    testing(ratio,trackPoints,points,radius,speeds,telemetry,lapTime,steps,geneticBest);
     if(excel){saveSpeedsToExcel(radius,steps,getTyres(),telemetry);}
 }

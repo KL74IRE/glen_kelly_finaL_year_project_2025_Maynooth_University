@@ -1,17 +1,21 @@
 void testing(double ratio, double[][] trackPoints, double[][][] points, double[][][] radius,
-             double[][][] speeds, double[][][] telemetry, double[][] lapTime,
-             double geneticBest, int steps)
+             double[][][] speeds, double[][][] telemetry, double[][] lapTime,int steps, double geneticBest)
 {
   hasError = false;
   testMessage = "TESTS RUNNING...";
 
   checkPoints(trackPoints, points, radius, speeds, telemetry, steps);
-
+  checkRandomRadius(radius, steps, ratio);
+  checkLaptime(lapTime, geneticBest);
+  
   testMessage = hasError ? "TESTS FAILED" : "TESTS PASSED";
 }
 
-void checkPoints(double[][] trackPoints, double[][][] points, double[][][] radius,double[][][] speeds, double[][][] telemetry, int steps){
+void checkPoints(double[][] trackPoints, double[][][] points, double[][][] radius,double[][][] speeds, double[][][] telemetry, int steps)
+{
   double eps = 1;
+  int temp = offset;
+  offset = 10;
 
   for (int j = 0; j < steps; j++)
   {
@@ -107,6 +111,66 @@ void checkPoints(double[][] trackPoints, double[][][] points, double[][][] radiu
       hasError = true;
       println("RightY mismatch with telemetry[2][" + j + "][1] | expected " + originalRightY + " | got " + telemetry[2][j][1]);
     }
+    offset = temp;
   }
 }
 
+void checkRandomRadius(double[][][] radius, int steps, double ratio)
+{
+  for(int i=0; i<10; i++)
+  {
+    //Generate a random value between 0 and 2
+    double randomLane = Math.random() * 2;
+
+    //Generate a number between 0 and steps-1
+    int randomIndex = (int)(Math.random() * steps);
+
+    double x1 = radius[(int)randomLane][randomIndex-1][0];
+    double y1 = radius[(int)randomLane][randomIndex-1][1];
+    double x2 = radius[(int)randomLane][randomIndex][0];
+    double y2 = radius[(int)randomLane][randomIndex][1];
+    double x3 = radius[(int)randomLane][randomIndex][0];
+    double y3 = radius[(int)randomLane][randomIndex][1];
+
+    double a = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+    double b = Math.sqrt((x3 - x2) * (x3 - x2) + (y3 - y2) * (y3 - y2));
+    double c = Math.sqrt((x1 - x3) * (x1 - x3) + (y1 - y3) * (y1 - y3));
+    double area = abs((float)(x1*(y2-y3) + x2*(y3-y1) + x3*(y1-y2))) * 0.5;
+    double expectedRadius = (a * b * c) / (4 * area);
+    expectedRadius = expectedRadius / ratio;
+
+    if(Math.abs(expectedRadius - radius[(int)randomLane][randomIndex][2]) > 1) {
+      hasError = true;
+      println("Radius mismatch at lane " + (int)randomLane + " index " + randomIndex + " | expected " + expectedRadius + " | got " + radius[(int)randomLane][randomIndex][2]);
+    }
+  }
+}
+
+void checkRandomSpeed(double[][][] speeds, double[][][] radius, int steps)
+{
+  for(int i=0; i<10; i++)
+  {
+    //Generate a random value between 0 and 2
+    double randomLane = Math.random() * 2;
+
+    //Generate a number between 0 and steps-1
+    int randomIndex = (int)(Math.random() * steps);
+
+    double Tyres = getTyres()[0];
+    double expectedSpeed = Math.sqrt(Tyres * 9.81 * radius[(int)randomLane][randomIndex][2]);
+    if(Math.abs(expectedSpeed - speeds[(int)randomLane][randomIndex][3]) > 1) {
+      hasError = true;
+      println("Speed mismatch at lane " + (int)randomLane + " index " + randomIndex + " | expected " + expectedSpeed + " | got " + speeds[(int)randomLane][randomIndex][3]);
+    }
+  }
+}
+
+void checkLaptime(double[][] lapTime, double geneticBest)
+{
+  double laptimeSeconds = lapTime[3][0] * 60;
+  laptimeSeconds += lapTime[3][1];
+  if(geneticBest > laptimeSeconds) {
+    hasError = true;
+    println("Genetic SLOWER Lap time | Original Laptime " + lapTime[3][lapTime[0].length - 1] + " | Genetic: " + geneticBest);
+  }
+}
