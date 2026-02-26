@@ -132,6 +132,12 @@ void setup() {
     new Button(bx, by += bh + gap, bw, bh, "Width Reset",
       () -> { offset = 10; },
       () -> true, true),
+    new Button(bx, by += bh + gap, bw, bh, "Most Recent Telemetry.XLXS",
+      () -> { 
+        launch(sketchPath("Track_Telemetry_Analysis.xlsx")); 
+      },
+      () -> true, true),
+
   };
   
 
@@ -149,7 +155,7 @@ void draw() {
 void drawUI() {
   noStroke();
   fill(245, 245, 255, 240);
-  rect(10, 20, 210, 350, 16);
+  rect(10, 20, 240, 470, 16);
 
   for (Button b : buttons) b.draw();
 
@@ -196,6 +202,26 @@ void drawUI() {
   textSize(16);
   fill(40, 90, 180);
   text(elites, 20, 330);
+
+  fill(30, 30, 60);
+  textSize(18);
+  textAlign(LEFT, TOP);
+  text("Situation Details:", 20, 360);
+
+  String circuit = edit ? "Editing Mode" : brands ? "Brands Hatch Indy Circuit" : bahrain ? "Bahrain International GP Circuit" : circle ? "Circle Track" : "No Track Selected";
+  fill(0);
+  textSize(15);
+  text("Current Track:", 20, 390);
+  textSize(16);
+  fill(40, 90, 180);
+  text(circuit, 20, 410);
+
+  fill(0);
+  textSize(15);
+  text("Car:", 20, 440);
+  textSize(16);
+  fill(40, 90, 180);
+  text("BMW M4 GT4 EVO", 20, 460);
 
   textAlign(LEFT, BASELINE);
   textSize(14);
