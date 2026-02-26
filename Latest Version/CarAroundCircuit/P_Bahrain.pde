@@ -1,11 +1,3 @@
-/*
-Method used to initialise the Bahrain GP circuit,
-
-Method should posses track length,
-should grab the co-ordinates of the manually inputed waypoints,
-should posses the position of the waypoint at the start and end of the 2nd spline pass, in order to get a smooth 
-*/
-
 void bahrain(int steps, boolean excel,boolean showWaypoints,boolean showPoints,boolean showSpeeds,boolean telemetryS, boolean showTPs)
 {
   int mTrackLength = 5412;
