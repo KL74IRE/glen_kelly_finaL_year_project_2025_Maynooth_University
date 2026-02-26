@@ -9,7 +9,7 @@ Supervisor: Charles Markham
 */
 
 public int steps = 100;
-boolean excel = false;
+boolean excel = true;
 boolean showWaypoints = false;
 boolean showPoints = false;
 boolean showSpeeds = false;
@@ -35,15 +35,18 @@ interface BoolSupplier {
 void setup() {
   size(1920, 980);
   float bx = width - 200;
-  float by = 30;
+  float by = 15;
   float bw = 170;
-  float bh = 36;
+  float bh = 25;
   float gap = 8;
   float smallW = (bw - gap) / 2;
   float smallW2 = (bw - gap) / 2;
   float smallW3 = (bw - gap * 2) / 3;
 
   buttons = new Button[] {
+    new Button(bx, by += bh + gap, bw, bh, "Excel Export",
+      () -> excel = !excel,
+      () -> excel, false),
     new Button(bx, by += bh + gap + 12, smallW3, bh, "Inside",
       () -> { one = true; two = false; three = false; showShortest = false; },
       () -> one, false),
@@ -66,7 +69,7 @@ void setup() {
       () -> { telemetryS = !telemetryS; if (telemetryS) showSpeeds = false; },
       () -> telemetryS, false),
     new Button(bx, by += bh + gap + 12, bw, bh, "Edit Mode",
-      () -> { edit = true; brands = false; bahrain = false; circle = false; },
+      () -> { edit = !edit; },
       () -> edit, false),
     new Button(bx, by += bh + gap, bw, bh, "Brands",
       () -> { brands = true; edit = false; bahrain = false; circle = false; },
@@ -77,23 +80,17 @@ void setup() {
     new Button(bx, by += bh + gap, bw, bh, "Circle",
       () -> { circle = true; edit = false; brands = false; bahrain = false; },
       () -> circle, false),
-    new Button(bx, by += bh + gap + 12, smallW, bh, "-100",
+    new Button(bx, by += bh + gap + 12, smallW, bh, "Steps (-100)",
       () -> { steps = max(100, steps - 100); rebuildScene(); },
       () -> true, true),
-    new Button(bx + smallW + gap, by, smallW, bh, "+100",
+    new Button(bx + smallW + gap, by, smallW, bh, "Steps (+100)",
       () -> { steps += 100; rebuildScene(); },
       () -> true, true),
-    new Button(bx, by += bh + gap, smallW, bh, "-1000",
+    new Button(bx, by += bh + gap, smallW, bh, "Steps (-1000)",
       () -> { steps = max(100, steps - 1000); rebuildScene(); },
       () -> true, true),
-    new Button(bx + smallW + gap, by, smallW, bh, "+1000",
+    new Button(bx + smallW + gap, by, smallW, bh, "Steps (+1000)",
       () -> { steps += 1000; rebuildScene(); },
-      () -> true, true),
-    new Button(bx, by += bh + gap, smallW, bh, "-1 width",
-      () -> { offset = max(1, offset - 1); },
-      () -> true, true),
-    new Button(bx + smallW + gap, by, smallW, bh, "+1 width",
-      () -> { offset += 1; },
       () -> true, true),
     new Button(bx, by += bh + gap + 12, bw, bh, "Rebuild",
       () -> rebuildScene(),
@@ -101,10 +98,10 @@ void setup() {
     new Button(bx, by += bh + gap, bw, bh, "Genetic",
       () -> genetic = !genetic,
       () -> genetic, false),
-    new Button(bx, by += bh + gap + 12, smallW2, bh, "-100 R",
+    new Button(bx, by += bh + gap + 12, smallW2, bh, "-100 Gen",
       () -> { generations = max(10, generations - 100); },
       () -> true, true),
-    new Button(bx + smallW2 + gap, by, smallW2, bh, "+100 R",
+    new Button(bx + smallW2 + gap, by, smallW2, bh, "+100 Gen",
       () -> { generations += 100; },
       () -> true, true),
     new Button(bx, by += bh + gap, smallW, bh, "-10 Pop",
@@ -113,19 +110,29 @@ void setup() {
     new Button(bx + smallW + gap, by, smallW, bh, "+10 Pop",
       () -> { population += 10; },
       () -> true, true),
-    new Button(bx, by += bh + gap, smallW, bh, "-10 Elites",
+    new Button(bx, by += bh + gap, smallW, bh, "-10 Keep",
       () -> { elites = max(1, elites - 10); },
       () -> true, true),
-    new Button(bx + smallW + gap, by, smallW, bh, "+10 Elites",
+    new Button(bx + smallW + gap, by, smallW, bh, "+10 Keep",
       () -> { elites += 10; },
       () -> true, true),
-    new Button(bx, by += bh + gap + 12, smallW2, bh, "-100",
-      () -> { steps = max(100, steps - 100); rebuildScene(); },
+    new Button(bx, by += bh + gap+10, smallW, bh, "-1 width",
+      () -> { offset = max(1, offset - 5); },
       () -> true, true),
-    new Button(bx + smallW2 + gap, by, smallW2, bh, "+100",
-      () -> { steps += 100; rebuildScene(); },
-      () -> true, true)
+    new Button(bx + smallW + gap, by, smallW, bh, "+1 width",
+      () -> { offset += 5; },
+      () -> true, true),
+    new Button(bx, by += bh + gap, smallW, bh, "-5 width",
+      () -> { offset = max(1, offset - 5); },
+      () -> true, true),
+    new Button(bx + smallW + gap, by, smallW, bh, "+5 width",
+      () -> { offset += 5; },
+      () -> true, true),
+    new Button(bx, by += bh + gap, bw, bh, "Width Reset",
+      () -> { offset = 10; },
+      () -> true, true),
   };
+  
 
   rebuildScene();
 }
@@ -140,18 +147,58 @@ void draw() {
 
 void drawUI() {
   noStroke();
-  fill(255, 230);
-  rect(width - 220, 20, 210, 700, 12);
+  fill(245, 245, 255, 240);
+  rect(10, 20, 210, 350, 16);
+
   for (Button b : buttons) b.draw();
+
+  fill(30, 30, 60);
+  textSize(18);
+  textAlign(LEFT, TOP);
+  text("Simulation Settings", 20, 30);
+
   fill(0);
+  textSize(15);
+  text("Path Sampling Steps:", 20, 70);
   textSize(16);
-  textAlign(LEFT);
-  text("Steps: " + steps, 20, 230);
-  text("Track Width: " + String.format("%.2f", offset * 2 / gRatio) + "m", 20, 260);
-  text("Genetic Population: " + population, 20, 290);
-  text("Genetic generations: " + generations, 20, 320);
-  text("Genetic Keep: " + elites, 20, 350);
-  textAlign(LEFT);
+  fill(40, 90, 180);
+  text(steps, 20, 90);
+
+  fill(0);
+  textSize(15);
+  text("Track Width (m):", 20, 120);
+  textSize(16);
+  fill(40, 90, 180);
+  text(String.format("%.2f", offset * 2 / gRatio), 20, 140);
+
+  fill(30, 30, 60);
+  textSize(18);
+  text("Genetic Algorithm", 20, 180);
+
+  fill(0);
+  textSize(15);
+  text("Population Size:", 20, 210);
+  textSize(16);
+  fill(40, 90, 180);
+  text(population, 20, 230);
+
+  fill(0);
+  textSize(15);
+  text("Generations:", 20, 260);
+  textSize(16);
+  fill(40, 90, 180);
+  text(generations, 20, 280);
+
+  fill(0);
+  textSize(15);
+  text("Elites Kept:", 20, 310);
+  textSize(16);
+  fill(40, 90, 180);
+  text(elites, 20, 330);
+
+  textAlign(LEFT, BASELINE);
+  textSize(14);
+  fill(0);
 }
 
 void displayTestMessage() {
