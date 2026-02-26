@@ -10,9 +10,9 @@ void main(double[] x, double[] y, int start, int end, int steps, int mTrackLengt
   if (genetic == true) {
     geneticBest = getGeneticBestLap(points, ratio, steps);
   }
-  drawLapTimes(lapTime, geneticBest);
   drawTrack(x, y, 800);
   visualisationAllLanes(x, y, speeds, telemetry, steps, showWaypoints, showPoints, showSpeeds, telemetryS, lapTime);
+  drawLapTimes(lapTime, geneticBest);
   if (excel) {
     saveSpeedsToExcel(steps,telemetry,speeds, ratio);
   }
@@ -20,41 +20,61 @@ void main(double[] x, double[] y, int start, int end, int steps, int mTrackLengt
 }
 
 void drawLapTimes(double[][] times, double geneticBest) {
-  textSize(16);
+  float x = 1480;    // Aligned with the UI box
+  float y = 20;   // Positioned below the Simulation Settings box
+  float w = 210;   // Same width as UI box
+  float h = 135;   // Height to fit 4-5 lines of text
+  float padding = 10;
+
+  // 1. Draw Background Box (matching your UI style)
+  noStroke();
+  fill(245, 245, 255, 240); 
+  rect(x, y, w, h, 16);
+
+  // 2. Draw Header
+  fill(30, 30, 60);
+  textSize(18);
   textAlign(LEFT, TOP);
+  text("Lap Times", x + padding, y + padding);
 
-  float x = 20;
-  float y = 370;
-  float lineH = 22;
-
-  String[] labels = { "Inside Lane", "Center Lane", "Outside Lane", "Optimal" };
-  color[] colors = {
-    color(255, 0, 0),      // Inside Lane - Red
-    color(0, 0, 255),      // Center Lane - Blue
-    color(255, 165, 0),    // Outside Lane - Orange
-    color(0, 200, 0)       // Optimal - Green
+  // 3. Draw Lap Time Data
+  float currentY = y + 40;
+  float lineH = 20;
+  String[] labels = { "Inside:", "Center:", "Outside:", "Optimal:" };
+  
+  // Note: Using your existing colors for the text to differentiate lanes
+  color[] laneColors = {
+    color(200, 40, 40),   // Darker Red
+    color(40, 90, 180),   // Blue (matching your UI blue)
+    color(220, 120, 0),   // Orange
+    color(30, 150, 30)    // Green
   };
 
+  textSize(15);
   for (int j = 0; j < times.length && j < labels.length; j++) {
     int minutes = (int) times[j][0];
     double seconds = times[j][1];
 
-    fill(colors[j]);
-    String s = String.format("%s: %02d:%06.3f", labels[j], minutes, seconds);
-    text(s, x, y + j * lineH);
+    fill(0); // Label color
+    text(labels[j], x + padding, currentY);
+    
+    fill(laneColors[j]); // Value color
+    String timeStr = String.format("%02d:%06.3f", minutes, seconds);
+    text(timeStr, x + 85, currentY); // Offset value to the right
+    
+    currentY += lineH;
   }
 
+  // 4. Genetic Best (if applicable)
   if (geneticBest > 0 && !Double.isInfinite(geneticBest)) {
     int gMin = (int)(geneticBest / 60.0);
     double gSec = geneticBest - gMin * 60.0;
 
-    fill(128, 0, 128); // Purple for Genetic
-
+    fill(100, 50, 150); // Purple for Genetic
     String g = String.format("Genetic: %02d:%06.3f", gMin, gSec);
-    text(g, x, y + times.length * lineH);
+    text(g, x + padding, currentY);
   }
 
+  // Reset alignment for other functions
   textAlign(LEFT, BASELINE);
-  textSize(14);
-  fill(0);
 }

@@ -9,7 +9,7 @@ Supervisor: Charles Markham
 */
 
 public int steps = 100;
-boolean excel = true;
+boolean excel = false;
 boolean showWaypoints = false;
 boolean showPoints = false;
 boolean showSpeeds = false;
@@ -34,6 +34,7 @@ interface BoolSupplier {
 
 void setup() {
   size(1920, 980);
+
   float bx = width - 200;
   float by = 15;
   float bw = 170;
