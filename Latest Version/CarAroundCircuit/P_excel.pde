@@ -130,8 +130,8 @@ void createMultiSeriesChart(XSSFSheet sheet, XSSFSheet dataSheet, int steps, Str
     if (actualLabels[i].contains("Outside")) setSeriesColor(series, 0, 0, 255, false);
     else if (actualLabels[i].contains("Center"))  setSeriesColor(series, 128, 0, 128, false);
     else if (actualLabels[i].contains("Inside"))  setSeriesColor(series, 255, 0, 0, false);
-    else if (actualLabels[i].contains("Genetic")) setSeriesColor(series, 0, 200, 0, false);
-    else if (actualLabels[i].contains("Shortest"))setSeriesColor(series, 255, 0, 255, false);
+    else if (actualLabels[i].contains("Shortest")) setSeriesColor(series, 0, 200, 0, false);
+    else if (actualLabels[i].contains("Genetic"))setSeriesColor(series, 255, 0, 255, false);
   }
   chart.plot(data);
 }

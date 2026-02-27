@@ -40,7 +40,7 @@ void drawLapTimes(double[][] times, double geneticBest) {
   // 3. Draw Lap Time Data
   float currentY = y + 40;
   float lineH = 20;
-  String[] labels = { "Inside:", "Center:", "Outside:", "Optimal:" };
+  String[] labels = { "Inside:", "Center:", "Outside:", "Short (m):" };
   
   // Note: Using your existing colors for the text to differentiate lanes
   color[] laneColors = {

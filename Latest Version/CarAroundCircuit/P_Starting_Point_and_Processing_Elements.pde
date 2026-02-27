@@ -48,6 +48,11 @@ void setup() {
     new Button(bx, by += bh + gap, bw, bh, "Excel Export",
       () -> excel = !excel,
       () -> excel, false),
+    new Button(bx, by += bh + gap, bw, bh, "Most Recent Telemetry.XLXS",
+      () -> { 
+        launch(sketchPath("Track_Telemetry_Analysis.xlsx")); 
+      },
+      () -> true, true),
     new Button(bx, by += bh + gap + 12, smallW3, bh, "Inside",
       () -> { one = true; two = false; three = false; showShortest = false; },
       () -> one, false),
@@ -132,15 +137,7 @@ void setup() {
     new Button(bx, by += bh + gap, bw, bh, "Width Reset",
       () -> { offset = 10; },
       () -> true, true),
-    new Button(bx, by += bh + gap, bw, bh, "Most Recent Telemetry.XLXS",
-      () -> { 
-        launch(sketchPath("Track_Telemetry_Analysis.xlsx")); 
-      },
-      () -> true, true),
-
   };
-  
-
   rebuildScene();
 }
 
@@ -155,7 +152,6 @@ void draw() {
 void drawUI() {
   noStroke();
   fill(245, 245, 255, 240);
-  rect(10, 20, 240, 470, 16);
 
   for (Button b : buttons) b.draw();
 
