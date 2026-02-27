@@ -83,6 +83,15 @@ void saveSpeedsToExcel(int steps, double[][][] telemetry, double[][][] speeds, d
         new int[]{11, 12}, new String[]{"Shortest Actual", "Genetic Actual"}, 
         new int[]{7}, new String[]{"Genetic Vmax Limit"});
 
+    XSSFSheet fullComparisonSheet = workbook.createSheet("Path Optimization Comparison");
+    createMultiSeriesChart(fullComparisonSheet, dataSheet, steps, 
+        circuit + " - Path Logic Comparison", 
+        new int[]{9, 11, 12}, // Indices for Center, Shortest, and Genetic Actuals
+        new String[]{"Center (Baseline)", "Shortest Path", "Genetic Algorithm"}, 
+        new int[]{7},          // Limit line (Genetic Vmax is a good reference here)
+        new String[]{"Global Vmax Limit"});
+
+
     FileOutputStream fileOut = new FileOutputStream(sketchPath("Track_Telemetry_Analysis.xlsx"));
     workbook.write(fileOut);
     fileOut.close();
