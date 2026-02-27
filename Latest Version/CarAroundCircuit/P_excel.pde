@@ -22,7 +22,7 @@ import org.apache.poi.xssf.usermodel.*;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 
 
-void saveSpeedsToExcel(int steps, double[][][] telemetry, double[][][] speeds, double ratio) {
+void saveSpeedsToExcel(int steps, double[][][] telemetry, double[][][] speeds, double ratio, double [] [] stint) {
   try {
     XSSFWorkbook workbook = new XSSFWorkbook();
     String circuit = edit ? "Editing Mode" : brands ? "Brands Hatch Indy Circuit" : bahrain ? "Bahrain International GP Circuit" : circle ? "Circle Track" : "No Track Selected";
@@ -90,6 +90,35 @@ void saveSpeedsToExcel(int steps, double[][][] telemetry, double[][][] speeds, d
         new String[]{"Center (Baseline)", "Shortest Path", "Genetic Algorithm"}, 
         new int[]{7},          // Limit line (Genetic Vmax is a good reference here)
         new String[]{"Global Vmax Limit"});
+    
+if (stint != null) {
+    XSSFSheet stintSheet = workbook.createSheet("Stint Analysis");
+    int totalLaps = stint[0].length - 1; // Note: using stint[0].length based on your first snippet
+
+    String[] sHeaders = {"Lap", "Soft Lap", "Medium Lap", "Hard Lap", "Soft Total", "Medium Total", "Hard Total"};
+    Row sHeaderRow = stintSheet.createRow(0);
+    for(int i = 0; i < sHeaders.length; i++) sHeaderRow.createCell(i).setCellValue(sHeaders[i]);
+
+    double[] runningTotals = new double[3];
+
+    for (int j = 1; j <= totalLaps; j++) {
+        Row row = stintSheet.createRow(j);
+        row.createCell(0).setCellValue(j);
+        
+        for (int i = 0; i < 3; i++) {
+            // APPLY LIMIT: If lap time > 250, cap it at 250 (Tyre Failure)
+            double currentLap = Math.min(250.0, stint[i][j]);
+            runningTotals[i] += currentLap;
+            
+            row.createCell(i + 1).setCellValue(currentLap);
+            row.createCell(i + 4).setCellValue(runningTotals[i]);
+        }
+    }
+    
+    // Create the charts (Lap times capped at 250s)
+    createStintChart(stintSheet, totalLaps, "Lap-by-Lap (Max 250s Limit)", 1, 5); 
+    createStintChart(stintSheet, totalLaps, "Total Race Time", 4, 15);
+}
 
 
     FileOutputStream fileOut = new FileOutputStream(sketchPath("Track_Telemetry_Analysis.xlsx"));
@@ -167,3 +196,59 @@ void setSeriesColor(XDDFScatterChartData.Series series, int r, int g, int b, boo
     println("Coloring Error: " + e.getMessage());
   }
 }
+
+void createStintChart(XSSFSheet sheet, int laps, String title, int startCol, int anchorCol) {
+  XSSFDrawing drawing = sheet.createDrawingPatriarch();
+  // Anchor defines chart position: (col1, row1, col2, row2)
+  // anchorCol is where the left side starts; +9 defines the width
+  XSSFClientAnchor anchor = drawing.createAnchor(0, 0, 0, 0, anchorCol, 1, anchorCol + 9, 25);
+  XSSFChart chart = drawing.createChart(anchor);
+  chart.setTitleText(title);
+  chart.setTitleOverlay(false);
+
+  XDDFChartLegend legend = chart.getOrAddLegend();
+  legend.setPosition(org.apache.poi.xddf.usermodel.chart.LegendPosition.BOTTOM);
+
+  // X-Axis (Lap Number)
+  XDDFCategoryAxis bottomAxis = chart.createCategoryAxis(org.apache.poi.xddf.usermodel.chart.AxisPosition.BOTTOM);
+  bottomAxis.setTitle("Lap Number");
+
+  // Y-Axis (Time)
+  XDDFValueAxis leftAxis = chart.createValueAxis(org.apache.poi.xddf.usermodel.chart.AxisPosition.LEFT);
+  
+  // Apply the 250s limit visual capping to individual lap charts only
+  if (startCol <= 3) {
+    leftAxis.setTitle("Lap Time (s)");
+    leftAxis.setMaximum(250.0); // Hard ceiling for tyre failure visualization
+    leftAxis.setMinimum(0.0);
+  } else {
+    leftAxis.setTitle("Total Elapsed Time (s)");
+  }
+
+  // Data Source for X-Axis (Laps are always in Column 0)
+  XDDFDataSource<Double> xs = XDDFDataSourcesFactory.fromNumericCellRange(sheet, new CellRangeAddress(1, laps, 0, 0));
+  
+  // Use Scatter with Lines to show degradation curves
+  XDDFScatterChartData data = (XDDFScatterChartData) chart.createData(ChartTypes.SCATTER, bottomAxis, leftAxis);
+  data.setStyle(org.apache.poi.xddf.usermodel.chart.ScatterStyle.LINE);
+
+  String[] compounds = {"Soft", "Medium", "Hard"};
+
+  for (int i = 0; i < 3; i++) {
+    // Select the correct column based on startCol (1-3 for Laps, 4-6 for Total)
+    XDDFNumericalDataSource<Double> ys = XDDFDataSourcesFactory.fromNumericCellRange(sheet, new CellRangeAddress(1, laps, startCol + i, startCol + i));
+    
+    XDDFScatterChartData.Series series = (XDDFScatterChartData.Series) data.addSeries(xs, ys);
+    series.setTitle(compounds[i], null);
+    series.setSmooth(false); // Sharp lines represent discrete lap events better
+
+    // Apply Colors: Red (Soft), Yellow (Medium), Silver/White (Hard)
+    // Note: ensure your setSeriesColor helper is compatible with these parameters
+    if (i == 0)      setSeriesColor(series, 255, 0, 0, false);   // Red
+    else if (i == 1) setSeriesColor(series, 255, 200, 0, false); // Yellow
+    else             setSeriesColor(series, 180, 180, 180, false); // Silver
+  }
+
+  chart.plot(data);
+}
+

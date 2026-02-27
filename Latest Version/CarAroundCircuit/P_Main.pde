@@ -19,7 +19,7 @@ void main(double[] x, double[] y, int start, int end, int steps, int mTrackLengt
   visualisationAllLanes(x, y, speeds, telemetry, steps, showWaypoints, showPoints, showSpeeds, telemetryS, lapTime);
   drawLapTimes(lapTime, geneticBest,stint, laps);
   if (excel) {
-    saveSpeedsToExcel(steps,telemetry,speeds, ratio);
+    saveSpeedsToExcel(steps,telemetry,speeds, ratio, stint);
   }
   testing(ratio, trackPoints, points, radius, speeds, telemetry, lapTime, steps, geneticBest);
 }
@@ -34,7 +34,7 @@ void drawLapTimes(double[][] times, double geneticBest, double[][] stint, int la
   noStroke();
   fill(245, 245, 255, 240);
   if (stintB == true) {
-    rect(x, y, w, h + 60, 16);
+    rect(x, y, w, h + 80, 16);
   } else {
     rect(x, y, w, h, 16);
   }
@@ -47,7 +47,7 @@ void drawLapTimes(double[][] times, double geneticBest, double[][] stint, int la
   float currentY = y + 40;
   float lineH = 20;
 
-  String[] labels = { "Inside", "Center", "Outside", "Short (m)" };
+  String[] labels = { "Inside (S)", "Center (S)", "Outside (S)", "Short (S)" };
 
   color[] laneColors = {
     color(200, 40, 40),
@@ -83,7 +83,7 @@ void drawLapTimes(double[][] times, double geneticBest, double[][] stint, int la
 
     fill(100, 50, 150);
     textAlign(LEFT, TOP);
-    text("Genetic:", labelX, currentY);
+    text("Genetic (S):", labelX, currentY);
 
     textAlign(RIGHT, TOP);
     String g = String.format("%02d:%06.3f", gMin, gSec);

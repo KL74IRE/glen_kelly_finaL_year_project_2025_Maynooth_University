@@ -201,8 +201,8 @@ void smoothGenesInPlace(float[] g, int steps, int passes) {
 double[][] getGeneticStint(double[][][] points, double ratio, int steps, double[] tyres, int laps) {
   double[][] stints = new double[3][laps + 1];
 
-  double softDegradation = 0.03;
-  double mediumDegradation = 0.012;
+  double softDegradation = 0.1;
+  double mediumDegradation = 0.02;
   double hardDegradation = 0.005;
 
   for (int i = 0; i < 3; i++) {
