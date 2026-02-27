@@ -16,7 +16,7 @@ double[][][] carAroundTrack(double[][][] speeds, double ratio, int steps) {
       double s = Math.sqrt(dx * dx + dy * dy) / ratio;
       double vPrev = telemetry[j][i - 1][2];
       double vCalc = Math.sqrt(vPrev * vPrev + 2.0 * accel * s);
-      double vMax = speeds[j][i][2];
+      double vMax = speeds[j][i][3];
       telemetry[j][i][2] = Math.min(vCalc, vMax);
     }
 

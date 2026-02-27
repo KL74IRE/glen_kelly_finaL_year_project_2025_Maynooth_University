@@ -9,6 +9,8 @@ Supervisor: Charles Markham
 */
 
 public int steps = 100;
+public int laps = 20;
+boolean stintB = false;
 boolean excel = false;
 boolean showWaypoints = false;
 boolean showPoints = false;
@@ -137,6 +139,21 @@ void setup() {
     new Button(bx, by += bh + gap, bw, bh, "Width Reset",
       () -> { offset = 10; },
       () -> true, true),
+    new Button(bx, by += bh + gap+10, smallW, bh, "-1 lap",
+      () -> { laps = max(1, laps - 1); },
+      () -> true, true),
+    new Button(bx + smallW + gap, by, smallW, bh, "+1 lap",
+      () -> { laps += 1; },
+      () -> true, true),
+    new Button(bx, by += bh + gap, smallW, bh, "-5 lap",
+      () -> { laps = max(1, laps - 5); },
+      () -> true, true),
+    new Button(bx + smallW + gap, by, smallW, bh, "+5 lap",
+      () -> { laps += 5; },
+      () -> true, true),
+    new Button(bx, by += bh + gap, bw, bh, "Stint Calc",
+      () -> stintB = !stintB,
+      () -> stintB, false),
   };
   rebuildScene();
 }
@@ -162,62 +179,68 @@ void drawUI() {
 
   fill(0);
   textSize(15);
-  text("Path Sampling Steps:", 20, 70);
+  text("Path Sampling Steps:", 20, 60);
   textSize(16);
   fill(40, 90, 180);
-  text(steps, 20, 90);
+  text(steps, 20, 80);
 
   fill(0);
   textSize(15);
-  text("Track Width (m):", 20, 120);
+  text("Track Width (m):", 20, 100);
   textSize(16);
   fill(40, 90, 180);
-  text(String.format("%.2f", offset * 2 / gRatio), 20, 140);
-
+  text(String.format("%.2f", offset * 2 / gRatio), 20, 120);
+  fill(0);
+  textSize(15);
+  text("Stint Laps:", 20, 140);
+  textSize(16);
+  fill(40, 90, 180);
+  text(laps, 20, 160);
+  
   fill(30, 30, 60);
   textSize(18);
-  text("Genetic Algorithm", 20, 180);
+  text("Genetic Algorithm", 20, 200);
 
   fill(0);
   textSize(15);
-  text("Population Size:", 20, 210);
+  text("Population Size:", 20, 230);
   textSize(16);
   fill(40, 90, 180);
-  text(population, 20, 230);
+  text(population, 20, 250);
 
   fill(0);
   textSize(15);
-  text("Generations:", 20, 260);
+  text("Generations:", 20, 280);
   textSize(16);
   fill(40, 90, 180);
-  text(generations, 20, 280);
+  text(generations, 20, 300);
 
   fill(0);
   textSize(15);
-  text("Elites Kept:", 20, 310);
+  text("Elites Kept:", 20, 330);
   textSize(16);
   fill(40, 90, 180);
-  text(elites, 20, 330);
+  text(elites, 20, 350);
 
   fill(30, 30, 60);
   textSize(18);
   textAlign(LEFT, TOP);
-  text("Situation Details:", 20, 360);
+  text("Situation Details:", 20, 380);
 
   String circuit = edit ? "Editing Mode" : brands ? "Brands Hatch Indy Circuit" : bahrain ? "Bahrain International GP Circuit" : circle ? "Circle Track" : "No Track Selected";
   fill(0);
   textSize(15);
-  text("Current Track:", 20, 390);
+  text("Current Track:", 20, 410);
   textSize(16);
   fill(40, 90, 180);
-  text(circuit, 20, 410);
+  text(circuit, 20, 430);
 
   fill(0);
   textSize(15);
-  text("Car:", 20, 440);
+  text("Car:", 20, 460);
   textSize(16);
   fill(40, 90, 180);
-  text("BMW M4 GT4 EVO", 20, 460);
+  text("BMW M4 GT4 EVO", 20, 480);
 
   textAlign(LEFT, BASELINE);
   textSize(14);

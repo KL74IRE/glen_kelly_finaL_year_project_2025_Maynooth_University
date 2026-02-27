@@ -9,7 +9,7 @@ float[] geneticVMax;
 float[] bestVisualX, bestVisualY;
 boolean hasBestLine = false;
 
-double getGeneticBestLap(double[][][] points, double ratio, int steps) {
+double getGeneticBestLap(double[][][] points, double ratio, int steps, double tyre) {
   genes = new float[population][steps];
   nextGenes = new float[population][steps];
   currentFitness = new double[population];
@@ -32,8 +32,7 @@ double getGeneticBestLap(double[][][] points, double ratio, int steps) {
   for (int i = 0; i < generations; i++) {
     for (int p = 0; p < population; p++) {
       generateSplinePath(genes[p], points, steps);
-      double[] tyres = getTyres();
-      calculatePhysics((float)tyres[0], steps, ratio); 
+      calculatePhysics((float)tyre, steps, ratio); 
       getTelemetry(5.0f, 8.0f, (float)ratio, steps);
       currentFitness[p] = getLapTime((float)ratio, steps);
 
@@ -65,7 +64,7 @@ void calculatePhysics(float mu, int steps, double ratio) {
 }
 
 void getTelemetry(float acc, float dec, float ratio, int steps) {
-  v[0] = min(15.0f, geneticVMax[0]);
+  v[0] = 0.0f;
   for (int i = 1; i < steps; i++) {
     float s = dist(lineX[i-1], lineY[i-1], lineX[i], lineY[i]) / ratio;
     v[i] = min(sqrt(sq(v[i-1]) + 2 * acc * s), geneticVMax[i]);
@@ -197,4 +196,27 @@ void smoothGenesInPlace(float[] g, int steps, int passes) {
       g[i] = (g[(i-1+steps)%steps] + g[i] + g[(i+1)%steps]) / 3.0f;
     }
   }
+}
+
+double[][] getGeneticStint(double[][][] points, double ratio, int steps, double[] tyres, int laps) {
+  double[][] stints = new double[3][laps + 1];
+
+  double softDegradation = 0.03;
+  double mediumDegradation = 0.012;
+  double hardDegradation = 0.005;
+
+  for (int i = 0; i < 3; i++) {
+    stints[i][0] = 0.0;
+
+    for (int j = 1; j <= laps; j++) {
+      double tyrelife;
+      if (i == 0)      tyrelife = tyres[0] - (softDegradation * j);
+      else if (i == 1) tyrelife = tyres[1] - (mediumDegradation * j);
+      else             tyrelife = tyres[2] - (hardDegradation * j);
+
+      stints[i][j] = getGeneticBestLap(points, ratio, steps, tyrelife);
+      stints[i][0] += stints[i][j];
+    }
+  }
+  return stints;
 }
