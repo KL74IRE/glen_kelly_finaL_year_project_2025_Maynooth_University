@@ -61,6 +61,7 @@ void calculatePhysics(float mu, int steps, double ratio) {
     double r = getRadius(lineX[prev], lineY[prev], lineX[j], lineY[j], lineX[next], lineY[next], ratio);
     geneticVMax[j] = sqrt(mu * 9.81f * (float)r);
   }
+  geneticVMax[steps - 1] = 400;
 }
 
 void getTelemetry(float acc, float dec, float ratio, int steps) {
