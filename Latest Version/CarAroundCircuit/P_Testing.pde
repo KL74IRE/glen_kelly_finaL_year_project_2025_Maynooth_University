@@ -6,6 +6,7 @@ void testing(double ratio, double[][] trackPoints, double[][][] points, double[]
 
   checkPoints(trackPoints, points, radius, speeds, telemetry, steps);
   checkRandomRadius(radius, steps, ratio);
+  checkRandomSpeed(speeds,radius,steps);
   checkLaptime(lapTime, geneticBest);
 
   testMessage = hasError ? "TESTS FAILED" : "TESTS PASSED";
@@ -144,6 +145,7 @@ void checkRandomRadius(double[][][] radius, int steps, double ratio)
   }
 }
 
+
 void checkRandomSpeed(double[][][] speeds, double[][][] radius, int steps)
 {
   for (int i = 0; i < 10; i++)
@@ -162,9 +164,19 @@ void checkRandomSpeed(double[][][] speeds, double[][][] radius, int steps)
 
 void checkLaptime(double[][] lapTime, double geneticBest)
 {
-  double laptimeSeconds = lapTime[3][0] * 60;
-  laptimeSeconds += lapTime[3][1];
-  if (geneticBest > laptimeSeconds) {
+  double lapTimeInsideSeconds = lapTime[2][0] * 60;
+  lapTimeInsideSeconds += lapTime[2][1];
+    double lapTimeShortSeconds = lapTime[3][0] * 60;
+  lapTimeShortSeconds += lapTime[2][1];
+  if (geneticBest > lapTimeInsideSeconds) {
+  hasError = true;
+  println("Genetic SLOWER Lap time | Original Laptime " + lapTime[3][lapTime[0].length - 1] + " | Genetic: " + geneticBest);
+  }
+  else if (geneticBest > lapTimeShortSeconds) {
+  hasError = true;
+  println("Genetic SLOWER Lap time | Original Laptime " + lapTime[3][lapTime[0].length - 1] + " | Genetic: " + geneticBest);
+  }
+  else if (lapTimeShortSeconds > lapTimeInsideSeconds) {
   hasError = true;
   println("Genetic SLOWER Lap time | Original Laptime " + lapTime[3][lapTime[0].length - 1] + " | Genetic: " + geneticBest);
   }
