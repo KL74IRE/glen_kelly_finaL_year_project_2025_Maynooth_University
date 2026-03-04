@@ -33,7 +33,7 @@ double getGeneticBestLap(double[][][] points, double ratio, int steps, double ty
     for (int p = 0; p < population; p++) {
       generateSplinePath(genes[p], points, steps);
       calculatePhysics((float)tyre, steps, ratio); 
-      getTelemetry(5.0f, 8.0f, (float)ratio, steps);
+      getTelemetry((float)getAcceleration(),(float)getDeceleration(),(float)ratio,steps);
       currentFitness[p] = getLapTime((float)ratio, steps);
 
       if (currentFitness[p] < globalBest) {
@@ -198,23 +198,34 @@ void smoothGenesInPlace(float[] g, int steps, int passes) {
   }
 }
 
-double[][] getGeneticStint(double[][][] points, double ratio, int steps, double[] tyres, int laps) {
+double[][] getGeneticStint(double[][][] points, double ratio, int steps, double[] tyres, int laps, double trackLength) {
   double[][] stints = new double[3][laps + 1];
 
   double softDegradation = 0.1;
-  double mediumDegradation = 0.02;
-  double hardDegradation = 0.005;
+  double mediumDegradation = 0.05;
+  double hardDegradation = 0.025;
 
   for (int i = 0; i < 3; i++) {
     stints[i][0] = 0.0;
+
+    fuel = (laps + 1) * (trackLength / 1000.0 * 2.5);
 
     for (int j = 1; j <= laps; j++) {
       double tyrelife;
       if (i == 0)      tyrelife = tyres[0] - (softDegradation * j);
       else if (i == 1) tyrelife = tyres[1] - (mediumDegradation * j);
       else             tyrelife = tyres[2] - (hardDegradation * j);
+      fuel = fuel - (trackLength/1000.0 * 2.5);
 
-      stints[i][j] = getGeneticBestLap(points, ratio, steps, tyrelife);
+      double time = getGeneticBestLap(points, ratio, steps, tyrelife);
+      if(time > 200)
+      {
+      stints[i][j] = 200;
+      }
+      else
+      {
+        stints[i][j] = time;
+      }
       stints[i][0] += stints[i][j];
     }
   }

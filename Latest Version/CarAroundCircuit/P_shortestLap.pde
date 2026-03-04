@@ -39,7 +39,7 @@ double getShortestLap(double[][][] points, double ratio, int steps) {
         globalShortestDist = currentFitness[p];
         double[] tyres = getTyres();
         calculatePhysics((float)tyres[0], steps, ratio); 
-        getTelemetry(5.0f, 8.0f, (float)ratio, steps);
+        getTelemetry((float)getAcceleration(),(float)getDeceleration(),(float)ratio,steps);
         for (int k = 0; k < steps; k++) {
           xShortest[k] = (double)lineX[k];
           yShortest[k] = (double)lineY[k];

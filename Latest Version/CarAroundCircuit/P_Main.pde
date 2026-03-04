@@ -13,7 +13,7 @@ void main(double[] x, double[] y, int start, int end, int steps, int mTrackLengt
   }
   double [] [] stint = null;
   if(stintB == true) {
-    stint = getGeneticStint(points, ratio, steps, tyres, laps);
+    stint = getGeneticStint(points, ratio, steps, tyres, laps, mTrackLength);
   }
   drawTrack(x, y, 800);
   visualisationAllLanes(x, y, speeds, telemetry, steps, showWaypoints, showPoints, showSpeeds, telemetryS, lapTime);
