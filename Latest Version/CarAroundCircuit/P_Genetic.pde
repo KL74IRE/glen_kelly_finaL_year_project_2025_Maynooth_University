@@ -215,6 +215,10 @@ double[][] getGeneticStint(double[][][] points, double ratio, int steps, double[
       if (i == 0)      tyrelife = tyres[0] - (softDegradation * j);
       else if (i == 1) tyrelife = tyres[1] - (mediumDegradation * j);
       else             tyrelife = tyres[2] - (hardDegradation * j);
+      if(tyrelife < 0.1)
+      {
+        tyrelife = 0.1;
+      }
       fuel = fuel - (trackLength/1000.0 * 2.5);
 
       double time = getGeneticBestLap(points, ratio, steps, tyrelife);
@@ -225,8 +229,9 @@ double[][] getGeneticStint(double[][][] points, double ratio, int steps, double[
       else
       {
         stints[i][j] = time;
+        stints[i][0] += stints[i][j];
       }
-      stints[i][0] += stints[i][j];
+      
     }
   }
   return stints;
