@@ -42,7 +42,7 @@ void setup() {
   float by = 15;
   float bw = 170;
   float bh = 25;
-  float gap = 8;
+  float gap = 6;
   float smallW = (bw - gap) / 2;
   float smallW2 = (bw - gap) / 2;
   float smallW3 = (bw - gap * 2) / 3;

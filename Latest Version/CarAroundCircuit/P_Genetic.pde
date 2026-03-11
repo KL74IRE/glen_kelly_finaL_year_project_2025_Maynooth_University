@@ -261,7 +261,7 @@ void getGeneticStats(double[][][] points, double ratio, int steps, double[] tyre
   }
   else if(brands)
   {
-    println("Track: Bahrain");
+    println("Track: Brands");
   }
   else
   {
