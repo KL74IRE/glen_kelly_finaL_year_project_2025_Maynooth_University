@@ -10,6 +10,7 @@ Supervisor: Charles Markham
 
 public int steps = 100;
 public int laps = 20;
+boolean stats = false;
 boolean stintB = false;
 boolean excel = false;
 boolean showWaypoints = false;
@@ -157,6 +158,9 @@ void setup() {
     new Button(bx, by += bh + gap, bw, bh, "Stint Calc",
       () -> stintB = !stintB,
       () -> stintB, false),
+    new Button(bx, by += bh + gap, bw, bh, "Stats Output (Console Only!)",
+      () -> stats = !stats,
+      () -> stats, false),
   };
   rebuildScene();
 }

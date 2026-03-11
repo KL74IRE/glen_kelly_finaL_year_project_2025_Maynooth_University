@@ -251,4 +251,3 @@ void createStintChart(XSSFSheet sheet, int laps, String title, int startCol, int
 
   chart.plot(data);
 }
-

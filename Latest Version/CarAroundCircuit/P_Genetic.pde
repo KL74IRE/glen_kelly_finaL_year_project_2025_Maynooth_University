@@ -236,3 +236,49 @@ double[][] getGeneticStint(double[][][] points, double ratio, int steps, double[
   }
   return stints;
 }
+
+void getGeneticStats(double[][][] points, double ratio, int steps, double[] tyres) {
+  int laps = 30;
+  double[][] lapTimes = new double[3][laps];
+  double [] mean = new double[3];
+  double [] standardDeviation = new double [3];
+  for (int i = 0; i < 3; i++) {
+    for(int j = 0; j < laps; j++)
+    {
+      double time = getGeneticBestLap(points, ratio, steps, tyres[i]);
+      lapTimes [i][j] = (double)time;
+    }
+    mean[i] = mean(lapTimes[i]);
+    standardDeviation[i] = 0;
+    for(int j = 0; j < laps; j++)    {
+      standardDeviation[i] += pow((float)(lapTimes[i][j] - mean[i]), 2);
+    }
+    standardDeviation[i] = sqrt((float)(standardDeviation[i] / laps));
+  }
+  if(bahrain)
+  {
+    println("Track: Bahrain");
+  }
+  else if(brands)
+  {
+    println("Track: Bahrain");
+  }
+  else
+  {
+    println("Track: Circle");
+  }
+  println(laps + " laps per tyre, generations: " + generations + ", population: " + population + ", elites: " + elites);
+  println("Tyre Type\tMean Lap Time\tStandard Deviation\tCoefficient of Variation");
+  println("Soft\t\t" + String.format("%.2f", mean[0]) + "\t\t" + String.format("%.2f", standardDeviation[0]) + "\t\t" + String.format("%.4f%%", (standardDeviation[0]/mean[0]) * 100));
+  println("Medium\t\t" + String.format("%.2f", mean[1]) + "\t\t" + String.format("%.2f", standardDeviation[1]) + "\t\t" + String.format("%.4f%%", (standardDeviation[1]/mean[1]) * 100));
+  println("Hard\t\t" + String.format("%.2f", mean[2]) + "\t\t" + String.format("%.2f", standardDeviation[2]) + "\t\t" + String.format("%.4f%%", (standardDeviation[2]/mean[2]) * 100));
+
+  }
+
+double mean(double[] values) {
+  double sum = 0;
+  for (double val : values) {
+    sum += val;
+  } 
+  return sum / values.length;
+}

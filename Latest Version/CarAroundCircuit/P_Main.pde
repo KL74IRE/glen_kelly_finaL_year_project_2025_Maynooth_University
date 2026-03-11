@@ -15,6 +15,9 @@ void main(double[] x, double[] y, int start, int end, int steps, int mTrackLengt
   if(stintB == true) {
     stint = getGeneticStint(points, ratio, steps, tyres, laps, mTrackLength);
   }
+  if(stats == true) {
+    getGeneticStats(points, ratio, steps, tyres);
+  }
   drawTrack(x, y, 800);
   visualisationAllLanes(x, y, speeds, telemetry, steps, showWaypoints, showPoints, showSpeeds, telemetryS, lapTime);
   drawLapTimes(lapTime, geneticBest,stint, laps);
